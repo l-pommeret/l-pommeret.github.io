@@ -6,41 +6,97 @@
     <title>Luc Pommeret — Chercheur Stagiaire en Machine Learning</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
+            background-color: #f5f9ff;
+        }
+        .content-margin-container {
+            display: flex;
+            width: 100%;
+            justify-content: left;
+            align-items: flex-start;
+        }
+        .main-content-block {
+            width: 70%;
+            max-width: 1100px;
+            background-color: #fff;
+            border-left: 1px solid #DDD;
+            border-right: 1px solid #DDD;
+            padding: 8px;
+        }
+        .margin-left-block, .margin-right-block {
+            font-size: 14px;
+            width: 15%;
+            max-width: 130px;
+            position: relative;
+            margin-left: 10px;
+            text-align: left;
+            padding: 5px;
         }
         h1 {
-            color: #333;
+            font-size: 32px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 4px;
+            margin-bottom: 10px;
         }
         h2 {
+            font-size: 18px;
             color: #666;
+        }
+        a {
+            color: #0e7862;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #24b597;
+        }
+        .header {
+            font-weight: 300;
+            font-size: 17px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
         }
     </style>
 </head>
 <body>
-    <h1>Luc Pommeret</h1>
-    <p>Étudiant en machine learning et logique | Chercheur Stagiaire à l'IRIF (Paris XIIIe)</p>
-    
-    <h2>Expérience Récente</h2>
-    <h3>IRIF (Institut de Recherche en Informatique Fondamentale)</h3>
-    <p>Assistant de recherche | avril 2024 - Présent</p>
-    <ul>
-        <li>Étude de l'émergence de capacités dans les grands modèles de langage (LLMs)</li>
-        <li>Étude de l'impact du bruit dans les données d'entraînement sur les performances des LLMs.</li>
-    </ul>
-
-    <h2>Compétences Principales</h2>
-    <ul>
-        <li>Python</li>
-        <li>NLP</li>
-        <li>IA générative</li>
-    </ul>
-
-    <h2>Contact</h2>
-    <p>Email: lucpommeret@etu.u-paris.fr</p>
+    <div class="content-margin-container">
+        <div class="margin-left-block"></div>
+        <div class="main-content-block">
+            <h1>Luc Pommeret</h1>
+            <p class="header">Étudiant en machine learning et logique | Chercheur Stagiaire à l'<a href="https://www.irif.fr">IRIF</a> (Paris XIIIe)</p>
+            
+            <h2>Expérience Récente</h2>
+            <h3><a href="https://www.irif.fr">IRIF</a> (Institut de Recherche en Informatique Fondamentale)</h3>
+            <p>Assistant de recherche stagiaire | avril 2024 - aujourd'hui</p>
+            <p><i>sous la direction de <a href="https://www.irif.fr/~mdr/">Michel de Rougemont</a></i></p>
+            <ul>
+                <li>Étude de l'émergence de capacités dans les grands modèles de langage (LLMs)</li>
+                <li>Étude de l'impact du bruit dans les données d'entraînement sur les performances des LLMs.</li>
+            </ul>
+            
+            <h2>Compétences Principales</h2>
+            <ul>
+                <li>Python</li>
+                <li>NLP</li>
+                <li>IA générative</li>
+            </ul>
+            
+            <h2>Talk</h2>
+            <h3>PFIA 2024 - <a href="https://pfia2024.univ-lr.fr/Intervenants/Luc-Pommeret/">Exploring Emergent Skills with Chess-GPT</a></h3>
+            <p>Nous explorons les stratégies de jeu d'échecs au sein des grands modèles de langage (LLMs) en utilisant des parties en notation PGN (Portable Game Notation) de la base de données Lichess comme données d'entraînement. Notre objectif est d'examiner la capacité des LLMs à développer de nouvelles compétences, qui peuvent être considérées comme une classe de propriétés émergentes. Nous étudions la capacité à résoudre des puzzles d'échecs (jeux qui nécessitent un seul coup correct) et cherchons à évaluer le taux de réussite d'un LLM dans cette tâche. Ensuite, nous étudions comment ce taux de réussite change lorsque nous modifions le paramètre de contexte elo dans l'en-tête du PGN.</p>
+            
+            <h2>Contact</h2>
+            <p>Email: lucpommeret@etu.u-paris.fr</p>
+        </div>
+        <div class="margin-right-block"></div>
+    </div>
 </body>
 </html>
