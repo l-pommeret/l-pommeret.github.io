@@ -42,6 +42,7 @@
             font-family: 'Courier New', Courier, monospace;
             margin-top: 4px;
             margin-bottom: 10px;
+            text-align: center;
         }
         h2 {
             font-size: 18px;
@@ -57,6 +58,7 @@
         .header {
             font-weight: 300;
             font-size: 17px;
+            text-align: center;
         }
         img {
             max-width: 100%;
@@ -68,6 +70,13 @@
             position: absolute;
             top: 10px;
             right: 10px;
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -81,6 +90,7 @@
         <div class="margin-left-block"></div>
         <div class="main-content-block">
             <h1>Luc Pommeret</h1>
+            <img src="assets/pdp.jpeg" alt="Photo de profil de Luc Pommeret" class="profile-image">
             <p class="header" data-translate="header"></p>
             
             <h2 data-translate="recent_experience"></h2>
@@ -104,7 +114,7 @@
             <p data-translate="talk_description"></p>
             
             <h2 data-translate="contact"></h2>
-            <p>Email: lucpommeret@etu.u-paris.fr</p>
+            <p>Email: <a href="mailto:lucpommeret@etu.u-paris.fr">lucpommeret@etu.u-paris.fr</a></p>
         </div>
         <div class="margin-right-block"></div>
     </div>
