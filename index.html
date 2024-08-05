@@ -1,7 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luc Pommeret — Chercheur Stagiaire en Machine Learning</title>
+    <style>
+        body {
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #f5f9ff;
+        }
+        .content-margin-container {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .main-content-block {
+            width: 80%;
+            max-width: 1100px;
+            background-color: #fff;
+            border-left: 1px solid #DDD;
+            border-right: 1px solid #DDD;
+            padding: 16px;
+        }
+        .margin-left-block, .margin-right-block {
+            font-size: 14px;
+            width: 10%;
+            max-width: 100px;
+            position: relative;
+            margin-left: 5px;
+            text-align: left;
+            padding: 5px;
+        }
+        h1 {
+            font-size: 32px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 4px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 18px;
+            color: #666;
+        }
+        a {
+            color: #0e7862;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #24b597;
+        }
+        .header {
+            font-weight: 300;
+            font-size: 17px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <select id="languageSelector" onchange="changeLanguage(this.value)">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+    </select>
+
+    <div class="content-margin-container">
+        <div class="margin-left-block"></div>
+        <div class="main-content-block">
+            <h1>Luc Pommeret</h1>
+            <p class="header" data-translate="header"></p>
+            
+            <h2 data-translate="recent_experience"></h2>
+            <h3><a href="https://www.irif.fr">IRIF</a> <span data-translate="irif_full"></span></h3>
+            <p data-translate="position_date"></p>
+            <p><i data-translate="supervisor"></i></p>
+            <ul>
+                <li data-translate="research_topic_1"></li>
+                <li data-translate="research_topic_2"></li>
+            </ul>
+            
+            <h2 data-translate="main_skills"></h2>
+            <ul>
+                <li>Python</li>
+                <li>NLP</li>
+                <li data-translate="generative_ai"></li>
+            </ul>
+            
+            <h2>Talk</h2>
+            <h3>PFIA 2024 - <a href="https://pfia2024.univ-lr.fr/Intervenants/Luc-Pommeret/" data-translate="talk_title"></a></h3>
+            <p data-translate="talk_description"></p>
+            
+            <h2 data-translate="contact"></h2>
+            <p>Email: lucpommeret@etu.u-paris.fr</p>
+        </div>
+        <div class="margin-right-block"></div>
+    </div>
+
+    <script>
+        const translations = {
+            'fr': {
+                'header': 'Étudiant en Master 2 | Machine learning et logique | Chercheur Stagiaire à l\'<a href="https://www.irif.fr">IRIF</a> (Paris XIIIe)',
+                'recent_experience': 'Expérience Récente',
+                'irif_full': '(Institut de Recherche en Informatique Fondamentale)',
+                'position_date': 'Assistant de recherche stagiaire | avril 2024 - aujourd\'hui',
+                'supervisor': 'sous la direction de <a href="https://www.irif.fr/~mdr/">Michel de Rougemont</a>',
+                'research_topic_1': 'Étude de l\'émergence de capacités dans les grands modèles de langage (LLMs)',
+                'research_topic_2': 'Étude de l\'impact du bruit dans les données d\'entraînement sur les performances des LLMs',
+                'main_skills': 'Compétences Principales',
+                'generative_ai': 'IA générative',
+                'talk_title': 'Exploring Emergent Skills with Chess-GPT',
+                'talk_description': 'Nous explorons les stratégies de jeu d\'échecs au sein des grands modèles de langage (LLMs) en utilisant des parties en notation PGN (Portable Game Notation) de la base de données Lichess comme données d\'entraînement. Notre objectif est d\'examiner la capacité des LLMs à développer de nouvelles compétences, qui peuvent être considérées comme une classe de propriétés émergentes. Nous étudions la capacité à résoudre des puzzles d\'échecs (jeux qui nécessitent un seul coup correct) et cherchons à évaluer le taux de réussite d\'un LLM dans cette tâche. Ensuite, nous étudions comment ce taux de réussite change lorsque nous modifions le paramètre de contexte elo dans l\'en-tête du PGN.',
+                'contact': 'Contact'
+            },
+            'en': {
+                'header': 'Graduate Student | Machine Learning and Logic | Research Intern at <a href="https://www.irif.fr">IRIF</a> (Paris 13th)',
+                'recent_experience': 'Recent Experience',
+                'irif_full': '(Institute for Research in Fundamental Computer Science)',
+                'position_date': 'Research Assistant Intern | April 2024 - present',
+                'supervisor': 'under the supervision of <a href="https://www.irif.fr/~mdr/">Michel de Rougemont</a>',
+                'research_topic_1': 'Study of emerging capabilities in large language models (LLMs)',
+                'research_topic_2': 'Study of the impact of noise in training data on LLM performance',
+                'main_skills': 'Main Skills',
+                'generative_ai': 'Generative AI',
+                'talk_title': 'Exploring Emergent Skills with Chess-GPT',
+                'talk_description': 'We explore chess game strategies within large language models (LLMs) using PGN (Portable Game Notation) games from the Lichess database as training data. Our goal is to examine the ability of LLMs to develop new skills, which can be considered a class of emergent properties. We study the ability to solve chess puzzles (games that require a single correct move) and seek to evaluate the success rate of an LLM in this task. Then, we study how this success rate changes when we modify the elo context parameter in the PGN header.',
+                'contact': 'Contact'
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-translate]').forEach(elem => {
+                const key = elem.getAttribute('data-translate');
+                elem.innerHTML = translations[lang][key];
+            });
+        }
+
+        // Initialize with French
+        changeLanguage('fr');
+    </script>
 </body>
 </html>
