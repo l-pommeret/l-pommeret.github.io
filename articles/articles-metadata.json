@@ -1,0 +1,16 @@
+{
+    "articles": [
+      {
+        "title": "Mon premier article de blog",
+        "date": "2024-08-01",
+        "excerpt": "Ceci est un extrait de mon premier article de blog...",
+        "filename": "article1.html"
+      },
+      {
+        "title": "Réflexions sur l'IA générative",
+        "date": "2024-07-15",
+        "excerpt": "Dans cet article, je partage mes pensées sur les récents développements en IA générative...",
+        "filename": "article2.html"
+      }
+    ]
+  }
