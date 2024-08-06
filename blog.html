@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luc Pommeret — Blog</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="alternate icon" href="assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
     <style>
-        .article-date {
-            font-style: italic;
-            color: #666;
-        }
         body {
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
             line-height: 1.6;
@@ -148,7 +148,7 @@
         }
 
         function loadBlogPosts(lang) {
-            fetch('articles/articles-metadata.json')
+            fetch(`articles/articles-${lang}.json`)
                 .then(response => response.json())
                 .then(data => {
                     const blogPostsContainer = document.getElementById('blog-posts');

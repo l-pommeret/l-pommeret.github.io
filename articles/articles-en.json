@@ -1,0 +1,16 @@
+{
+    "articles": [
+      {
+        "title": "My First Blog Post",
+        "date": "2024-08-01",
+        "excerpt": "This is an excerpt from my first blog post in English...",
+        "filename": "article1-en.html"
+      },
+      {
+        "title": "Reflections on Generative AI",
+        "date": "2024-07-15",
+        "excerpt": "In this article, I share my thoughts on recent developments in generative AI...",
+        "filename": "article2-en.html"
+      }
+    ]
+  }

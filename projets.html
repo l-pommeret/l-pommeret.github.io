@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luc Pommeret — Projets</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="alternate icon" href="assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
+    <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
     <style>
         body {
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -125,20 +130,20 @@
                 'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
                 'projects_description': 'Voici quelques-uns des projets sur lesquels je travaille actuellement.',
-                'project_1_title': 'Projet 1',
-                'project_1_description': 'Description du projet 1...',
-                'project_2_title': 'Projet 2',
-                'project_2_description': 'Description du projet 2...'
+                'project_1_title': 'chessGPT bruité',
+                'project_1_description': 'Ici, je définis une notion de bruit dans une partie d\'échecs, comme un tirage uniforme parmi les coups légaux. J\'entraîne plusieurs LLMs sur différents taux de bruit (0%, 5%, 50% et 80%) et je constate une meilleure robustesse des modèles entraînés sur plus de bruit (moins de coups illégaux). Ces modèles "bruités" comprennent-ils mieux les règles des échecs ?',
+                'project_2_title': 'Grokking Tic Tac Toe',
+                'project_2_description': 'Ici, je tente d\'entraîner un LLM avec l\'algorithme fastGrok, et 1% des parties possibles au Morpion (Tic Tac Toe), pour vérifier si le modèle finit par comprendre le jeu exhaustivement.'
             },
             'en': {
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
                 'menu_blog': 'Blog',
                 'projects_description': 'Here are some of the projects I\'m currently working on.',
-                'project_1_title': 'Project 1',
-                'project_1_description': 'Description of project 1...',
-                'project_2_title': 'Project 2',
-                'project_2_description': 'Description of project 2...'
+                'project_1_title': 'Noisy chessGPT',
+                'project_1_description': 'Here, I define a notion of noise in a chess game as a uniform draw among legal moves. I train several LLMs on different noise rates (0%, 5%, 50%, and 80%) and observe better robustness in models trained on more noise (fewer illegal moves). Do these "noisy" models better understand the rules of chess?',
+                'project_2_title': 'Grokking Tic Tac Toe',
+                'project_2_description': 'Here, I attempt to train an LLM using the fastGrok algorithm and 1% of possible Tic Tac Toe games to verify if the model eventually understands the game exhaustively.'
             }
         };
 
