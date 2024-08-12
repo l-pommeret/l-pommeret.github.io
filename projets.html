@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luc Pommeret — Projets</title>
+    <title>Luc Pommeret — Projects</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
     <link rel="alternate icon" href="assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
     <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
     <style>
         body {
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -26,7 +30,7 @@
             align-items: flex-start;
         }
         .main-content-block {
-            width: 80%;
+            width: 130%;
             max-width: 1100px;
             background-color: #fff;
             border-left: 1px solid #DDD;
@@ -111,7 +115,7 @@
             </ul>
         </div>
         <div class="main-content-block">
-            <h1>Projets</h1>
+            <h1 data-translate="project_title"></h1>
             <p data-translate="projects_description"></p>
             
             <h2 data-translate="project_1_title"></h2>
@@ -126,6 +130,7 @@
     <script>
         const translations = {
             'fr': {
+                'project_title' : 'Projets',
                 'menu_home': 'Accueil',
                 'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
@@ -136,6 +141,7 @@
                 'project_2_description': 'Ici, je tente d\'entraîner un LLM avec l\'algorithme fastGrok, et 1% des parties possibles au Morpion (Tic Tac Toe), pour vérifier si le modèle finit par comprendre le jeu exhaustivement.'
             },
             'en': {
+                'project_title': 'Projects',
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
                 'menu_blog': 'Blog',
