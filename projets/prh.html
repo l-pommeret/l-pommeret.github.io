@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luc Pommeret — Représentation platonique du Morpion</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+    <link rel="alternate icon" href="../assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
+    <link rel="mask-icon" href="../assets/logo.svg" color="#0e7862">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <style>
+        body {
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #f5f9ff;
+        }
+        .content-margin-container {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .main-content-block {
+            width: 130%;
+            max-width: 1100px;
+            background-color: #fff;
+            border-left: 1px solid #DDD;
+            border-right: 1px solid #DDD;
+            padding: 16px;
+        }
+        .margin-left-block, .margin-right-block {
+            font-size: 14px;
+            width: 10%;
+            max-width: 100px;
+            position: relative;
+            margin-left: 5px;
+            text-align: left;
+            padding: 5px;
+        }
+        .margin-left-block {
+            position: sticky;
+            top: 20px;
+        }
+        h1 {
+            font-size: 32px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 18px;
+            color: #666;
+        }
+        a {
+            color: #0e7862;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #24b597;
+        }
+        .header {
+            font-weight: 300;
+            font-size: 17px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px auto;
+        }
+        .side-menu {
+            list-style-type: none;
+            padding: 0;
+        }
+        .side-menu li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <select id="languageSelector" onchange="changeLanguage(this.value)">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+    </select>
+
+    <div class="content-margin-container">
+        <div class="margin-left-block">
+            <ul class="side-menu">
+                <li><a href="../index.html" data-translate="menu_home"></a></li>
+                <li><a href="../projets.html" data-translate="menu_projects"></a></li>
+                <li><a href="../blog.html" data-translate="menu_blog"></a></li>
+                <li><a href="https://github.com/l-pommeret" data-translate="github"></a></li>
+            </ul>
+        </div>
+        <div class="main-content-block">
+            <h1 data-translate="project_title"></h1>
+            <p data-translate="project_description"></p>
+            
+            <h2 data-translate="introduction"></h2>
+            <p data-translate="intro_text"></p>
+            
+            <h2 data-translate="quick_start"></h2>
+            <p data-translate="dependencies"></p>
+            <pre><code data-translate="dependencies_code"></code></pre>
+
+            <h2 data-translate="text_games"></h2>
+            <p data-translate="text_games_example"></p>
+            <p data-translate="text_games_generate"></p>
+            <pre><code data-translate="text_games_code"></code></pre>
+
+            <h3 data-translate="train_text_transformer"></h3>
+            <pre><code data-translate="train_text_code"></code></pre>
+
+            <h3 data-translate="sample_text_model"></h3>
+            <pre><code data-translate="sample_text_code"></code></pre>
+
+            <h2 data-translate="image_games"></h2>
+            <p data-translate="image_games_description"></p>
+            <img src="https://github.com/l-pommeret/platonic_representation/blob/main/assets/game1.png?raw=true" alt="A image game" style="max-width: 100%; height: auto;">
+            <p data-translate="image_games_generate"></p>
+            <pre><code data-translate="image_games_code"></code></pre>
+
+            <h3 data-translate="train_image_transformer"></h3>
+            <pre><code data-translate="train_image_code"></code></pre>
+
+            <h3 data-translate="sample_image_model"></h3>
+            <pre><code data-translate="sample_image_code"></code></pre>
+
+            <h2 data-translate="probing"></h2>
+            <p data-translate="probing_description"></p>
+            <pre><code data-translate="probing_code"></code></pre>
+
+            <p data-translate="conclusion"></p>
+        </div>
+        <div class="margin-right-block"></div>
+    </div>
+
+    <script>
+        const translations = {
+            'fr': {
+                'project_title': 'Représentation platonique du Morpion',
+                'menu_home': 'Accueil',
+                'menu_projects': 'Projets',
+                'menu_blog': 'Blog',
+                'project_description': 'Étude des représentations internes d\'un transformer entraîné sur le jeu de Morpion',
+                'introduction': 'Introduction',
+                'intro_text': 'Ce projet s\'inspire de l\'article de juin 2024 de Philip Isola et ses étudiants : Platonic Representation Hypothesis. L\'idée centrale est que les modèles entraînés sur différents types de données (image, audio, texte) convergent vers la même représentation dans l\'espace latent. Le code pour l\'entraînement des transformers est basé sur le travail d\'Andrej Karpathy (nanoGPT). Dans ce projet, nous testons cette hypothèse sur un monde très simple : le Morpion. Nous entraînons deux transformers avec la même architecture et le même nombre de paramètres sur : 1) des images PNG de parties, 2) des parties en notation textuelle standard.',
+                'quick_start': 'Démarrage rapide',
+                'dependencies': 'Installation des dépendances',
+                'dependencies_code': 'pip install torch numpy transformers datasets tiktoken wandb tqdm',
+                'text_games': 'Jeux textuels',
+                'text_games_example': 'Exemple d\'une partie de morpion : ;X21 O23 X22 O31 X33 O32 X11',
+                'text_games_generate': 'Vous pouvez générer toutes les parties textuelles possibles avec :',
+                'text_games_code': 'python txt_game_generator.py',
+                'train_text_transformer': 'Entraînement du transformer basé sur le texte',
+                'train_text_code': 'cd platonic_representation\npython data/txt/prepare_txt.py\npython train.py config/train_txt.py',
+                'sample_text_model': 'Échantillonnage pour le modèle textuel',
+                'sample_text_code': 'python sample.py --out_dir=out-shakespeare-char',
+                'image_games': 'Jeux en images',
+                'image_games_description': 'Les images sont des fichiers PNG de 12x12, contenant chacun une partie. L\'état des cases est indiqué par des niveaux de gris :',
+                'image_games_generate': 'Vous pouvez générer des jeux en images (basés sur les jeux textuels) avec :',
+                'image_games_code': 'python img_game_generator.py',
+                'train_image_transformer': 'Entraînement du transformer basé sur l\'image',
+                'train_image_code': 'cd platonic_representation\npython img_game_generator.py\npython data/img/prepare_img.py\npython train.py config/train_img.py',
+                'sample_image_model': 'Échantillonnage pour le modèle d\'image',
+                'sample_image_code': 'python sample.py --out_dir=out-shakespeare-char',
+                'probing': 'Analyse couche par couche pour le texte',
+                'probing_description': 'Pour exécuter les sondes linéaires couche par couche (voir les graphiques dans /assets), vous pouvez lancer :',
+                'probing_code': 'python probing_txt.py',
+                'conclusion': 'Ce projet est actuellement en développement. Si vous avez des questions, n\'hésitez pas à me contacter !',
+                'github': 'GitHub'
+            },
+            'en': {
+                'project_title': 'Platonic Representation of Tic-Tac-Toe',
+                'menu_home': 'Home',
+                'menu_projects': 'Projects',
+                'menu_blog': 'Blog',
+                'project_description': 'Study of internal representations of a transformer trained on the Tic-Tac-Toe game',
+                'introduction': 'Introduction',
+                'intro_text': 'This project draws inspiration from the June 2024 article by Philip Isola and his students: Platonic Representation Hypothesis. The central idea is that models trained on different data types (image, audio, text) converge towards the same representation in latent space. The code for training the transformers is based on the work of Andrej Karpathy (nanoGPT). In this project, we test this hypothesis on a very simple world: Tic-tac-toe. We train two transformers with the same architecture and number of parameters on: 1) PNG images of games, 2) Games in standard textual notation.',
+                'quick_start': 'Quick Start',
+                'dependencies': 'Installing Dependencies',
+                'dependencies_code': 'pip install torch numpy transformers datasets tiktoken wandb tqdm',
+                'text_games': 'Text-games',
+                'text_games_example': 'Example of a tic-tac-toe game: ;X21 O23 X22 O31 X33 O32 X11',
+                'text_games_generate': 'You can generate all the possible text-games with:',
+                'text_games_code': 'python txt_game_generator.py',
+                'train_text_transformer': 'Training the Text-Based Transformer',
+                'train_text_code': 'cd platonic_representation\npython data/txt/prepare_txt.py\npython train.py config/train_txt.py',
+                'sample_text_model': 'Sampling for the Text Model',
+                'sample_text_code': 'python sample.py --out_dir=out-shakespeare-char',
+                'image_games': 'Image-games',
+                'image_games_description': 'The images are 12x12 png files, which contains one game each. The state of the square are denoted by gray-scale:',
+                'image_games_generate': 'You can generate img-games (based on text-games) with:',
+                'image_games_code': 'python img_game_generator.py',
+                'train_image_transformer': 'Training the Image-Based Transformer',
+                'train_image_code': 'cd platonic_representation\npython img_game_generator.py\npython data/img/prepare_img.py\npython train.py config/train_img.py',
+                'sample_image_model': 'Sampling for the Image Model',
+                'sample_image_code': 'python sample.py --out_dir=out-shakespeare-char',
+                'probing': 'Probing layer by layer for txt',
+                'probing_description': 'To run the linear probes layer by layer (see graphs in /assets), you can run:',
+                'probing_code': 'python probing_txt.py',
+                'conclusion': 'This project is currently under development. Should you have any questions, please don\'t hesitate to contact me!',
+                'github': 'GitHub'
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-translate]').forEach(elem => {
+                const key = elem.getAttribute('data-translate');
+                elem.innerHTML = translations[lang][key];
+            });
+        }
+
+        // Initialize with French
+        changeLanguage('fr');
+    </script>
+</body>
+</html>
