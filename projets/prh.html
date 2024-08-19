@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Hypothèse de Représentation Platonique dans un petit monde : le Morpion</title>
+    <title>The Platonic Representation Hypothesis in a Small World: Tic-Tac-Toe</title>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -105,49 +105,49 @@
 </head>
 <body>
     <select id="languageSelector" onchange="changeLanguage(this.value)">
-        <option value="fr">Français</option>
         <option value="en">English</option>
+        <option value="fr">Français</option>
     </select>
 
     <div class="content-margin-container">
         <div class="margin-left-block">
             <ul class="side-menu">
-                <li><a href="../index.html" data-translate="menu_home">Accueil</a></li>
-                <li><a href="../projets.html" data-translate="menu_projects">Projets</a></li>
+                <li><a href="../index.html" data-translate="menu_home">Home</a></li>
+                <li><a href="../projets.html" data-translate="menu_projects">Projects</a></li>
                 <li><a href="../blog.html" data-translate="menu_blog">Blog</a></li>
                 <li><a href="https://github.com/l-pommeret" data-translate="github">GitHub</a></li>
             </ul>
         </div>
         <div class="main-content-block">
-            <h1>L'Hypothèse de Représentation Platonique dans un petit monde : le Morpion</h1>
-            <p class="header">Par Luc Pommeret</p>
+            <h1>The Platonic Representation Hypothesis in a Small World: Tic-Tac-Toe</h1>
+            <p class="header">By Luc Pommeret</p>
             
             <div class="abstract">
-                <h2>Résumé</h2>
-                <p>Ce projet s'inspire de l'article de juin 2024 de Philip Isola et ses étudiants : Platonic Representation Hypothesis. L'idée centrale est que les modèles entraînés sur différents types de données (image, audio, texte) convergent vers la même représentation dans l'espace latent. Le code pour l'entraînement des transformers est basé sur le travail d'Andrej Karpathy (nanoGPT). Dans ce projet, nous testons cette hypothèse sur un monde très simple : le Morpion. Nous entraînons deux transformers avec la même architecture et le même nombre de paramètres sur : 1) des images PNG de parties, 2) des parties en notation textuelle standard.</p>
-                <p>Tout le code est disponible sur GitHub à cette adresse : <a href="https://github.com/l-pommeret/platonic_representation">https://github.com/l-pommeret/platonic_representation</a></p>
+                <h2>Abstract</h2>
+                <p>This project draws inspiration from the June 2024 article by Philip Isola and his students: Platonic Representation Hypothesis. The central idea is that models trained on different types of data (image, audio, text) converge towards the same representation in the latent space. The code for training the transformers is based on Andrej Karpathy's work (nanoGPT). In this project, we test this hypothesis on a very simple world: Tic-Tac-Toe. We train two transformers with the same architecture and number of parameters on: 1) PNG images of games, 2) games in standard textual notation.</p>
+                <p>All the code is available on GitHub at this address: <a href="https://github.com/l-pommeret/platonic_representation">https://github.com/l-pommeret/platonic_representation</a></p>
             </div>
 
             <h2>Introduction</h2>
-            <p>Les LLMs sont des modèles dont la performance sur le langage humain n'est plus à démontrer. Fondée sur l'architecture <i>transformer</i>, leurs capacités hors-norme semblent parfois nous échapper, si bien qu'on ne comprend pas toujours comment le modèle infère ce qu'il infère.</p>
-            <p>Une hypothèse en particulier a attiré notre attention, parce qu'elle semble faire la synthèse de nombreuses observations éparses que l'on a pu faire dans le domaine de l'interprétabilité (ou explicabilité). Il s'agit de la PRH, ou <i>Platonic Representation Hypothesis</i>, qui postule que les modèles de <i>transformer</i> se forgent un modèle de représentation du monde durant l'entraînement, résultant de la recherche de simplicité que recherche naturellement un réseau de neurones qui apprend.</p>
-            <p>La conséquence la plus surprenante de leur hypothèse est que des modèles entraînés sur différents types de données (images, texte, sons, etc.) vont converger vers la même représentation dans leur <i>espace latent</i>. Notre but ici sera d'étudier en profondeur un cas simple, très simple, celui du Morpion. Dans ce jeu, dont l'ensemble des parties peut être généré en quelques minutes par un ordinateur moderne, le monde est très simple, et ne nécessite pas une immense puissance de calcul, autre avantage dont nous pourrons tirer parti.</p>
-            <p>Ici nous allons étudier les représentations de deux <i>transformers</i> : l'un est entraîné sur des images du jeu, et l'autre sur des séquences de coups sous forme de texte.</p>
+            <p>LLMs are models whose performance on human language is no longer in question. Based on the <i>transformer</i> architecture, their extraordinary capabilities sometimes seem to elude us, to the point where we don't always understand how the model infers what it infers.</p>
+            <p>One hypothesis in particular has caught our attention because it seems to synthesize many scattered observations we've made in the field of interpretability (or explainability). This is the PRH, or <i>Platonic Representation Hypothesis</i>, which postulates that transformer models forge a model of world representation during training, resulting from the search for simplicity that a learning neural network naturally seeks.</p>
+            <p>The most surprising consequence of their hypothesis is that models trained on different types of data (images, text, sounds, etc.) will converge towards the same representation in their <i>latent space</i>. Our goal here will be to study in depth a simple, very simple case, that of Tic-Tac-Toe. In this game, where all possible games can be generated in a few minutes by a modern computer, the world is very simple, and does not require immense computing power, another advantage we can take advantage of.</p>
+            <p>Here we will study the representations of two <i>transformers</i>: one is trained on images of the game, and the other on sequences of moves in text form.</p>
             
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_img.png" alt="Représentations textuelles et imagées du Morpion">
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_img.png" alt="Textual and image representations of Tic-Tac-Toe">
             
-            <p>L'hypothèse principale que nous voulons tester est en somme si les deux représentations d'une même partie de Morpion convergent.</p>
-            <p>Pour préparer le terrain et explorer d'autres aspects de l'interprétation de l'architecture <i>transformer</i>, nous allons effectuer des tests à l'aide d'autres techniques, à commencer par le <i>sondage</i> (<i>probing</i>).</p>
+            <p>The main hypothesis we want to test is essentially whether the two representations of the same Tic-Tac-Toe game converge.</p>
+            <p>To prepare the ground and explore other aspects of interpreting the <i>transformer</i> architecture, we will perform tests using other techniques, starting with <i>probing</i>.</p>
 
-            <h2>Comment représenter une partie de Morpion ?</h2>
-            <p>Le morpion, comme les échecs ou les dames, est un jeu de plateau. Mais contrairement aux deux derniers, il est extrêmement simple, ce qui permet la complétude de l'analyse (on génère toutes les parties possibles, et on analyse notre <i>transformer</i> avec toutes ces parties).</p>
-            <p>Une manière très simple, voire enfantine, de représenter une partie de morpion est de la noter sous forme de dessin, côte à côte, en montrant l'état du plateau à chaque trait. C'est le format que nous avons choisi pour les images, qui ont donc une taille 9x9.</p>
+            <h2>How to represent a Tic-Tac-Toe game?</h2>
+            <p>Tic-Tac-Toe, like chess or checkers, is a board game. But unlike the latter two, it is extremely simple, which allows for completeness of analysis (we generate all possible games and analyze our <i>transformer</i> with all these games).</p>
+            <p>A very simple, even childish way to represent a Tic-Tac-Toe game is to note it in the form of a drawing, side by side, showing the state of the board at each move. This is the format we chose for the images, which therefore have a size of 9x9.</p>
             
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/game.png" alt="Représentation d'une partie de Morpion">
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/game.png" alt="Representation of a Tic-Tac-Toe game">
             
-            <p>Pour noter les parties de Morpion textuellement, nous avons choisi de noter les coups les uns à la suite des autres, comme le format PGN aux échecs, ce qui donne un historique de la partie.</p>
-            <p>Le format du jeu de Morpion étant ce qu'il est, le nombre de coups ne peut excéder 9, ce qui est bien pratique pour la tokénisation, première étape de l'apprentissage.</p>
-            <p>Voici les tokénisations respectives des images et des textes (que l'on trouve dans les fichiers <code>meta.pkl</code>) :</p>
+            <p>To note Tic-Tac-Toe games textually, we chose to note the moves one after the other, like the PGN format in chess, which gives a history of the game.</p>
+            <p>Given the format of the Tic-Tac-Toe game, the number of moves cannot exceed 9, which is very convenient for tokenization, the first step in learning.</p>
+            <p>Here are the respective tokenizations of images and texts (found in the <code>meta.pkl</code> files):</p>
             
             <pre>
 {
@@ -165,188 +165,186 @@
 }
             </pre>
             
-            <p>Les <i>stoi</i> et les <i>itos</i> ne sont pas grecs, mais un format de données qui permet de convertir les chaînes de caractères (strings) en entiers naturels (integers), c'est-à-dire string to integer ou plus simplement <i>stoi</i>, l'<i>itos</i> étant l'opération réciproque.</p>
-            <p>La tokénisation des images repose sur le pixel, qui sera blanc, valeur 0 (représenté par 'b'), si la case est saturée par un X, noire, valeur 1 (représenté par 'n'), si la case est saturée par un O, et grise, valeur 2 (représenté par 'g') si la case est vide. L'image est parcourue de manière naturelle, ligne par ligne pour former une ligne au format <code>str</code> (string).</p>
-            <p>Dans les deux cas, ";" est le token de début, celui qui marque le début de la séquence pour les images comme pour les textes.</p>
+            <p>The <i>stoi</i> and <i>itos</i> are not Greek, but a data format that allows converting strings to integers, that is, string to integer or more simply <i>stoi</i>, with <i>itos</i> being the reciprocal operation.</p>
+            <p>The tokenization of images is based on the pixel, which will be white, value 0 (represented by 'b'), if the cell is saturated by an X, black, value 1 (represented by 'n'), if the cell is saturated by an O, and gray, value 2 (represented by 'g') if the cell is empty. The image is traversed naturally, line by line to form a line in <code>str</code> (string) format.</p>
+            <p>In both cases, ";" is the start token, which marks the beginning of the sequence for both images and texts.</p>
 
             <h2>Probing</h2>
-            <p>Le <i>probing</i> (ou sondage) est une technique permettant de détecter la présence de propriétés dans un réseau de neurones. C'est une technique qui a été abondamment utilisée depuis 2018 et l'article Manning et al. qui l'applique à la détection d'arbres syntaxiques dans un transformer entraîné sur un corpus de textes étiquetés.</p>
-            <p>Ici, nous voulons utiliser le <i>probing</i> pour détecter la présence ou non d'une représentation du plateau de morpion, couche par couche dans le <i>transformer</i>. L'idée est d'entraîner un classifieur linéaire case par case et couche par couche pour qu'il détecte l'état d'une case (X, O ou vide). La technique utilisée ici est une généralisation du SVM originel, appelée <i>OneVsRest</i>.</p>
+            <p>Probing is a technique for detecting the presence of properties in a neural network. It's a technique that has been extensively used since 2018 and Manning et al.'s article applying it to the detection of syntactic trees in a transformer trained on a corpus of tagged texts.</p>
+            <p>Here, we want to use probing to detect the presence or absence of a representation of the Tic-Tac-Toe board, layer by layer in the <i>transformer</i>. The idea is to train a linear classifier cell by cell and layer by layer to detect the state of a cell (X, O, or empty). The technique used here is a generalization of the original SVM, called <i>OneVsRest</i>.</p>
 
-            <h3>Qu'est-ce qu'un SVM linéaire ?</h3>
-            <p>Le SVM (Support Vector Machine) linéaire est une technique d'apprentissage supervisé utilisée pour la classification. Dans le cas binaire, l'objectif est de trouver un hyperplan qui sépare au mieux les deux classes de données. Dans le cas linéaire qui nous occupe, il s'agit donc de trouver l'hyperplan qui explique le mieux la séparation des données dans le réseau de neurones.</p>
-            <p>Soit un ensemble de données d'entraînement \(\{(x_i, y_i)\}_{i=1}^n\), où \(x_i \in \mathbb{R}^d\) sont les vecteurs de caractéristiques et \(y_i \in \{-1, +1\}\) sont les étiquettes de classe.</p>
-            <p>L'hyperplan séparateur est défini par l'équation :</p>
+            <h3>What is a linear SVM?</h3>
+            <p>The linear SVM (Support Vector Machine) is a supervised learning technique used for classification. In the binary case, the objective is to find a hyperplane that best separates the two classes of data. In the linear case that concerns us, it is therefore a matter of finding the hyperplane that best explains the separation of data in the neural network.</p>
+            <p>Let a training data set \(\{(x_i, y_i)\}_{i=1}^n\), where \(x_i \in \mathbb{R}^d\) are the feature vectors and \(y_i \in \{-1, +1\}\) are the class labels.</p>
+            <p>The separating hyperplane is defined by the equation:</p>
             <p>\[w^T x + b = 0\]</p>
-            <p>où \(w \in \mathbb{R}^d\) est le vecteur normal à l'hyperplan et \(b \in \mathbb{R}\) est le biais.</p>        
+            <p>where \(w \in \mathbb{R}^d\) is the normal vector to the hyperplane and \(b \in \mathbb{R}\) is the bias.</p>        
 
-            
-
-            <h4>Problème d'optimisation</h4>
-            <p>Le SVM cherche à maximiser la marge entre l'hyperplan et les points les plus proches de chaque classe. Cela se traduit par le problème d'optimisation suivant :</p>
+            <h4>Optimization Problem</h4>
+            <p>The SVM seeks to maximize the margin between the hyperplane and the closest points of each class. This translates into the following optimization problem:</p>
             
             \[
             \begin{aligned}
             \min_{w,b} &\quad \frac{1}{2} \|w\|^2 \\
-            \text{s.c.} &\quad y_i(w^T x_i + b) \geq 1, \quad i = 1, \ldots, n
+            \text{s.t.} &\quad y_i(w^T x_i + b) \geq 1, \quad i = 1, \ldots, n
             \end{aligned}
             \]
             
-            <p>En utilisant les multiplicateurs de Lagrange, on obtient la formulation duale :</p>
+            <p>Using Lagrange multipliers, we obtain the dual formulation:</p>
             
             \[
             \begin{aligned}
             \max_{\alpha} &\quad \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j x_i^T x_j \\
-            \text{s.c.} &\quad \sum_{i=1}^n \alpha_i y_i = 0 \\
+            \text{s.t.} &\quad \sum_{i=1}^n \alpha_i y_i = 0 \\
             &\quad 0 \leq \alpha_i \leq C, \quad i = 1, \ldots, n
             \end{aligned}
             \]
             
-            <p>où \(\alpha_i\) sont les multiplicateurs de Lagrange et C est un paramètre de régularisation.</p>
-            <p>Une fois les \(\alpha_i\) optimaux trouvés, la fonction de décision pour un nouveau point x est :</p>
+            <p>where \(\alpha_i\) are the Lagrange multipliers and C is a regularization parameter.</p>
+            <p>Once the optimal \(\alpha_i\) are found, the decision function for a new point x is:</p>
             <p>\[f(x) = \text{sign}\left(\sum_{i=1}^n \alpha_i y_i x_i^T x + b\right)\]</p>
-            <p>où b est calculé en utilisant les vecteurs de support (points pour lesquels \(\alpha_i > 0\)).</p>
+            <p>where b is calculated using the support vectors (points for which \(\alpha_i > 0\)).</p>
         
 
-            <h4>Extension multi-classe</h4>
-            <p>Dans notre code, une approche <i>One-vs-Rest</i> est utilisée pour étendre le SVM binaire au cas multi-classe. Pour K classes, on entraîne K classifieurs binaires, chacun séparant une classe de toutes les autres.</p>
+            <h4>Multi-class Extension</h4>
+            <p>In our code, a <i>One-vs-Rest</i> approach is used to extend the binary SVM to the multi-class case. For K classes, we train K binary classifiers, each separating one class from all the others.</p>
 
-            <h3>Les résultats couche par couche</h3>
-            <p>Le transformer est une architecture assez complexe qui permet de multiples points de sonde. Nous avons donc voulu sonder les moindres recoins de celui-ci pour avoir une idée de la représentation du plateau de morpion à chaque étape.</p>
-            <p>Voici les résultats en prenant la précision de l'évaluation du SVM couche par couche pour le texte.</p>
-            
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_probe_points.png" alt="Probing couche par couche pour le texte">
-            
-            <p>Nous pouvons observer que le transformer acquiert petit à petit une représentation de l'état du plateau de morpion, qui culmine lors de la normalisation post-attention et de la seconde couche du MLP.</p>
-            <p>Pour le modèle entraîné sur les images, le résultat est très différent, puisque la courbe reste quasiment plate tout du long du <i>transformer</i>.</p>
-            
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_probe_points.png" alt="Probing couche par couche pour les images">
-            
-            <p>On remarque que le modèle ne forge pas de représentation du plateau de Morpion, ce qui peut interroger. Pour répondre à cela, nous pouvons formuler l'hypothèse qu'étant donné que pour résoudre la tâche (prédire le prochain token), il faut avoir une représentation sur laquelle se reposer à au moins un moment, il n'y a pas besoin de se forger une représentation lorsqu'on a déjà l'image en entrée, alors que c'est nécessaire lorsqu'on n'a que le texte.</p>
-            <p>Nous pouvons également nous intéresser à la représentation des cases (<i>positions</i>), qui montre des effets de symétrie et d'asymétrie assez intéressants.</p>
-            
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_positions_all_points.png" alt="Probing couche par couche pour le texte (positions)">
-            
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_positions_all_points.png" alt="Probing couche par couche pour les images (positions)">
-            
-            <p>Une observation générale est que très souvent, dans la plupart des couches des deux modèles, c'est la case du milieu (position 5) qui est la mieux représentée.</p>
-            <p>Ensuite, nous pouvons observer de belles symétries, surtout pour le texte, et certaines couches, qui montrent une représentation géométrique du plateau, qui évolue en fonction de la couche. Par exemple, dans le modèle d'image, la couche de normalisation pré-attention avantage clairement la case centrale, tandis que plus on s'approche de la sortie, moins cette case du milieu est favorisée, au profit d'autres cases, comme si l'analyse effectuait un mouvement concentrique vers les bords du plateau.</p>
+            <h3>Layer-by-Layer Results</h3>
+            <p>The transformer is a rather complex architecture that allows for multiple probe points. We therefore wanted to probe every nook and cranny of it to get an idea of the representation of the Tic-Tac-Toe board at each step.</p>
+            <p>Here are the results taking the accuracy of the SVM evaluation layer by layer for the text.</p>
 
-            <h2>La PRH se vérifie-t-elle ?</h2>
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_probe_points.png" alt="Probing layer by layer for text">
+            
+            <p>We can observe that the transformer gradually acquires a representation of the state of the Tic-Tac-Toe board, which culminates during post-attention normalization and the second layer of the MLP.</p>
+            <p>For the model trained on images, the result is very different, as the curve remains almost flat throughout the <i>transformer</i>.</p>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_probe_points.png" alt="Probing layer by layer for images">
+            
+            <p>We notice that the model does not forge a representation of the Tic-Tac-Toe board, which may raise questions. To answer this, we can hypothesize that given that to solve the task (predicting the next token), one needs to have a representation to rely on at least at one point, there is no need to forge a representation when one already has the image as input, whereas it is necessary when one only has the text.</p>
+            <p>We can also look at the representation of the cells (<i>positions</i>), which shows some interesting symmetry and asymmetry effects.</p>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_positions_all_points.png" alt="Probing layer by layer for text (positions)">
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_positions_all_points.png" alt="Probing layer by layer for images (positions)">
+            
+            <p>A general observation is that very often, in most layers of both models, it's the middle cell (position 5) that is best represented.</p>
+            <p>Then, we can observe beautiful symmetries, especially for the text, and certain layers, which show a geometric representation of the board that evolves depending on the layer. For example, in the image model, the pre-attention normalization layer clearly favors the central cell, while the closer we get to the output, the less this middle cell is favored, in favor of other cells, as if the analysis was performing a concentric movement towards the edges of the board.</p>
 
-            <h3>Quelles métriques ?</h3>
-            <p>Suivant la littérature antérieure, nous définissons l'<i>alignement représentationnel</i> comme une mesure de la similarité des structures de similarité induites par deux représentations, c'est-à-dire une métrique de similarité sur les noyaux. Nous donnons la définition mathématique de ces concepts ci-dessous :</p>
+            <h2>Does the PRH hold true?</h2>
+
+            <h3>Which metrics?</h3>
+            <p>Following previous literature, we define <i>representational alignment</i> as a measure of the similarity of similarity structures induced by two representations, i.e., a similarity metric on kernels. We give the mathematical definition of these concepts below:</p>
             <ul>
-                <li>Une <strong>représentation</strong> est une fonction f : X → ℝ^n qui attribue un vecteur de caractéristiques à chaque entrée dans un certain domaine de données X.</li>
-                <li>Un <strong>noyau</strong>, K : X × X → ℝ, caractérise comment une représentation mesure la distance/similarité entre les points de données. K(x_i,x_j)=⟨f(x_i),f(x_j)⟩, où ⟨·,·⟩ désigne le produit scalaire, x_i,x_j ∈ X et K ∈ 𝒦.</li>
-                <li>Une <strong>métrique d'alignement de noyau</strong>, m : 𝒦 × 𝒦 → ℝ, mesure la similarité entre deux noyaux, c'est-à-dire à quel point la mesure de distance induite par une représentation est similaire à celle induite par une autre. Les exemples incluent la Distance de Noyau Centrée (CKA), SVCCA, et les métriques des plus proches voisins.</li>
+                <li>A <strong>representation</strong> is a function f : X → ℝ^n that assigns a feature vector to each input in a certain data domain X.</li>
+                <li>A <strong>kernel</strong>, K : X × X → ℝ, characterizes how a representation measures the distance/similarity between data points. K(x_i,x_j)=⟨f(x_i),f(x_j)⟩, where ⟨·,·⟩ denotes the dot product, x_i,x_j ∈ X and K ∈ 𝒦.</li>
+                <li>A <strong>kernel alignment metric</strong>, m : 𝒦 × 𝒦 → ℝ, measures the similarity between two kernels, i.e., how similar the distance measure induced by one representation is to that induced by another. Examples include Centered Kernel Alignment (CKA), SVCCA, and nearest neighbor metrics.</li>
             </ul>
 
-            <h3>Métriques d'alignement</h3>
+            <h3>Alignment Metrics</h3>
 
-            <h4>Cycle KNN (K plus proches voisins cycliques)</h4>
-            <p><strong>Définition mathématique</strong><br>
-            Soient A et B deux ensembles de vecteurs de caractéristiques, chacun de taille N. Pour un k donné :</p>
+            <h4>Cycle KNN (K Nearest Neighbors Cycle)</h4>
+            <p><strong>Mathematical Definition</strong><br>
+            Let A and B be two sets of feature vectors, each of size N. For a given k:</p>
             <ol>
-                <li>Calculer les k-NN dans A : Pour chaque point dans A, trouver ses k plus proches voisins dans A.</li>
-                <li>Mapper ces voisins vers B.</li>
-                <li>Calculer les k-NN dans B pour ces points mappés.</li>
-                <li>Vérifier si le point original dans A est parmi ces voisins.</li>
+                <li>Calculate the k-NN in A: For each point in A, find its k nearest neighbors in A.</li>
+                <li>Map these neighbors to B.</li>
+                <li>Calculate the k-NN in B for these mapped points.</li>
+                <li>Check if the original point in A is among these neighbors.</li>
             </ol>
-            <p>La métrique est la fraction de points qui "survivent" à ce cycle.</p>
-            <p><strong>Formule</strong></p>
+            <p>The metric is the fraction of points that "survive" this cycle.</p>
+            <p><strong>Formula</strong></p>
             \[
             \text{Cycle\_KNN}(A, B) = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(a_i \in \text{kNN}_B(\text{kNN}_A(a_i)))
             \]
-            <p>où \(\mathbb{I}\) est la fonction indicatrice, et \(\text{kNN}_X(y)\) renvoie les k plus proches voisins de y dans X.</p>
+            <p>where \(\mathbb{I}\) is the indicator function, and \(\text{kNN}_X(y)\) returns the k nearest neighbors of y in X.</p>
         
-            <p><strong>Interprétation</strong></p>
+            <p><strong>Interpretation</strong></p>
             <ul>
-                <li>Plage : [0, 1]</li>
-                <li>Des valeurs plus élevées indiquent un meilleur alignement entre les deux espaces de caractéristiques.</li>
-                <li>Une valeur de 1 signifie une parfaite consistance cyclique : la structure de voisinage est parfaitement préservée lors du mapping de A vers B et retour.</li>
-                <li>Des valeurs plus basses suggèrent que la structure locale n'est pas bien préservée entre les deux espaces.</li>
+                <li>Range: [0, 1]</li>
+                <li>Higher values indicate better alignment between the two feature spaces.</li>
+                <li>A value of 1 means perfect cyclic consistency: the neighborhood structure is perfectly preserved when mapping from A to B and back.</li>
+                <li>Lower values suggest that the local structure is not well preserved between the two spaces.</li>
             </ul>
 
-            <h4>KNN mutuel (K plus proches voisins mutuels)</h4>
-            <p><strong>Définition mathématique</strong><br>
-            Pour chaque point dans A, vérifier s'il est parmi les k-plus proches voisins de son point correspondant dans B, et vice versa.</p>
-            <p><strong>Formule</strong></p>
+            <h4>Mutual KNN (K Nearest Neighbors Mutual)</h4>
+            <p><strong>Mathematical Definition</strong><br>
+            For each point in A, check if it is among the k-nearest neighbors of its corresponding point in B, and vice versa.</p>
+            <p><strong>Formula</strong></p>
             \[
-            \text{Mutual\_KNN}(A, B) = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(a_i \in \text{kNN}_B(b_i) \text{ ET } b_i \in \text{kNN}_A(a_i))
+            \text{Mutual\_KNN}(A, B) = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(a_i \in \text{kNN}_B(b_i) \text{ AND } b_i \in \text{kNN}_A(a_i))
             \]
-            <p>où \(\mathbb{I}\) est la fonction indicatrice, et \(\text{kNN}_X(y)\) renvoie les k plus proches voisins de y dans X.</p>
+            <p>where \(\mathbb{I}\) is the indicator function, and \(\text{kNN}_X(y)\) returns the k nearest neighbors of y in X.</p>
         
-            <p><strong>Interprétation</strong></p>
+            <p><strong>Interpretation</strong></p>
             <ul>
-                <li>Plage : [0, 1]</li>
-                <li>Des valeurs plus élevées indiquent une meilleure préservation mutuelle du voisinage entre les deux espaces.</li>
-                <li>Une valeur de 1 signifie que tous les points sont des k-plus proches voisins mutuels dans les deux espaces.</li>
-                <li>Des valeurs plus basses suggèrent que les structures de voisinage dans A et B sont différentes.</li>
+                <li>Range: [0, 1]</li>
+                <li>Higher values indicate better mutual preservation of neighborhood between the two spaces.</li>
+                <li>A value of 1 means that all points are mutual k-nearest neighbors in both spaces.</li>
+                <li>Lower values suggest that the neighborhood structures in A and B are different.</li>
             </ul>
 
-            <h4>CKA (Alignement de Noyau Centré)</h4>
-            <p><strong>Définition mathématique</strong><br>
-            CKA mesure la similarité entre deux noyaux après centrage.</p>
-            <p><strong>Formule</strong></p>
+            <h4>CKA (Centered Kernel Alignment)</h4>
+            <p><strong>Mathematical Definition</strong><br>
+            CKA measures the similarity between two kernels after centering.</p>
+            <p><strong>Formula</strong></p>
             \[
             \text{CKA}(K, L) = \frac{\langle K_c, L_c \rangle_F}{\|K_c\|_F \|L_c\|_F}
             \]
-            <p>où \(K_c\) et \(L_c\) sont des matrices de noyau centrées, \(\langle \cdot,\cdot \rangle_F\) est le produit scalaire de Frobenius, et \(\|\cdot\|_F\) est la norme de Frobenius.</p>
+            <p>where \(K_c\) and \(L_c\) are centered kernel matrices, \(\langle \cdot,\cdot \rangle_F\) is the Frobenius inner product, and \(\|\cdot\|_F\) is the Frobenius norm.</p>
         
-            <p><strong>Interprétation</strong></p>
+            <p><strong>Interpretation</strong></p>
             <ul>
-                <li>Plage : [0, 1]</li>
-                <li>Des valeurs plus élevées indiquent une plus grande similarité entre les matrices de noyau.</li>
-                <li>Une valeur de 1 suggère que les deux noyaux capturent des relations identiques entre les points de données.</li>
-                <li>Des valeurs plus basses indiquent que les noyaux capturent des relations différentes.</li>
-                <li>CKA est invariant aux transformations orthogonales et à la mise à l'échelle isotrope.</li>
+                <li>Range: [0, 1]</li>
+                <li>Higher values indicate greater similarity between the kernel matrices.</li>
+                <li>A value of 1 suggests that the two kernels capture identical relationships between data points.</li>
+                <li>Lower values indicate that the kernels capture different relationships.</li>
+                <li>CKA is invariant to orthogonal transformations and isotropic scaling.</li>
             </ul>
 
-            <h4>SVCCA (Analyse de Corrélation Canonique des Vecteurs Singuliers)</h4>
-            <p><strong>Définition mathématique</strong></p>
+            <h4>SVCCA (Singular Vector Canonical Correlation Analysis)</h4>
+            <p><strong>Mathematical Definition</strong></p>
             <ol>
-                <li>Effectuer la SVD sur les deux matrices de caractéristiques : A = U_A Σ_A V_A^T, B = U_B Σ_B V_B^T</li>
-                <li>Prendre les d premiers vecteurs singuliers : Ũ_A, Ũ_B</li>
-                <li>Effectuer la CCA sur ces matrices tronquées</li>
+                <li>Perform SVD on the two feature matrices: A = U_A Σ_A V_A^T, B = U_B Σ_B V_B^T</li>
+                <li>Take the first d singular vectors: Ũ_A, Ũ_B</li>
+                <li>Perform CCA on these truncated matrices</li>
             </ol>
-            <p><strong>Formule</strong></p>
+            <p><strong>Formula</strong></p>
     \[
     \text{SVCCA}(A, B) = \frac{1}{d} \sum_{i=1}^d \rho_i
     \]
-    <p>où \(\rho_i\) sont les corrélations canoniques entre \(\tilde{U}_A\) et \(\tilde{U}_B\).</p>
+    <p>where \(\rho_i\) are the canonical correlations between \(\tilde{U}_A\) and \(\tilde{U}_B\).</p>
     
-    <p>Les étapes pour calculer SVCCA sont :</p>
+    <p>The steps to calculate SVCCA are:</p>
     <ol>
-        <li>Effectuer la SVD sur les deux matrices de caractéristiques : 
+        <li>Perform SVD on the two feature matrices: 
             \[A = U_A \Sigma_A V_A^T, \quad B = U_B \Sigma_B V_B^T\]
         </li>
-        <li>Prendre les d premiers vecteurs singuliers : \(\tilde{U}_A, \tilde{U}_B\)</li>
-        <li>Effectuer la CCA sur ces matrices tronquées</li>
+        <li>Take the first d singular vectors: \(\tilde{U}_A, \tilde{U}_B\)</li>
+        <li>Perform CCA on these truncated matrices</li>
     </ol>
-            <p><strong>Interprétation</strong></p>
+            <p><strong>Interpretation</strong></p>
             <ul>
-                <li>Plage : [0, 1]</li>
-                <li>Des valeurs plus élevées indiquent une corrélation plus forte entre les composantes principales des deux espaces de caractéristiques.</li>
-                <li>Une valeur proche de 1 suggère que les principales directions de variation dans les deux espaces sont fortement alignées.</li>
-                <li>Des valeurs plus basses indiquent que les composantes principales des deux espaces capturent différents aspects des données.</li>
-                <li>SVCCA est moins sensible au bruit comparé à la simple CCA, en raison de l'étape initiale de SVD.</li>
+                <li>Range: [0, 1]</li>
+                <li>Higher values indicate stronger correlation between the principal components of the two feature spaces.</li>
+                <li>A value close to 1 suggests that the main directions of variation in the two spaces are strongly aligned.</li>
+                <li>Lower values indicate that the principal components of the two spaces capture different aspects of the data.</li>
+                <li>SVCCA is less sensitive to noise compared to simple CCA, due to the initial SVD step.</li>
             </ul>
 
             <h3>Conclusion</h3>
-            <p>Ces métriques fournissent différentes perspectives sur l'alignement entre deux ensembles de caractéristiques :</p>
+            <p>These metrics provide different perspectives on the alignment between two sets of features:</p>
             <ul>
-                <li>Cycle KNN et Mutual KNN sont plus sensibles aux structures locales et peuvent être utiles pour détecter des alignements fins.</li>
-                <li>CKA est plus robuste et capture des similarités globales, mais peut manquer des détails fins.</li>
-                <li>SVCCA est utile pour comparer les principales directions de variation, mais peut ignorer les caractéristiques moins importantes.</li>
+                <li>Cycle KNN and Mutual KNN are more sensitive to local structures and can be useful for detecting fine alignments.</li>
+                <li>CKA is more robust and captures global similarities, but may miss fine details.</li>
+                <li>SVCCA is useful for comparing the main directions of variation, but may ignore less important features.</li>
             </ul>
-            <p>En pratique, il est souvent bénéfique d'utiliser plusieurs de ces métriques ensemble pour obtenir une image plus complète de l'alignement entre deux ensembles de caractéristiques.</p>
+            <p>In practice, it is often beneficial to use several of these metrics together to get a more complete picture of the alignment between two sets of features.</p>
 
-            <h3>Les résultats</h3>
+            <h3>The Results</h3>
             
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/metrics_comparison.png" alt="Différentes métriques pour comparer la distance des représentations entre les deux modèles">
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/metrics_comparison.png" alt="Different metrics to compare the distance of representations between the two models">
             
-            <h2>Bibliographie</h2>
+            <h2>Bibliography</h2>
             <ol>
                 <li>Huh, M., Cheung, B., Wang, T., & Isola, P. (2024). The Platonic Representation Hypothesis. <i>arXiv preprint</i>.</li>
                 <li>Kornblith, S., Norouzi, M., Lee, H., & Hinton, G. (2019). Similarity of neural network representations revisited. In <i>International Conference on Machine Learning</i> (pp. 3519-3529). PMLR.</li>
@@ -359,15 +357,15 @@
 
     <script>
         const translations = {
-            'fr': {
-                'menu_home': 'Accueil',
-                'menu_projects': 'Projets',
-                'menu_blog': 'Blog',
-                'github': 'GitHub'
-            },
             'en': {
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
+                'menu_blog': 'Blog',
+                'github': 'GitHub'
+            },
+            'fr': {
+                'menu_home': 'Accueil',
+                'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
                 'github': 'GitHub'
             }
@@ -383,8 +381,8 @@
             });
         }
 
-        // Initialize with French
-        changeLanguage('fr');
+        // Initialize with English
+        changeLanguage('en');
     </script>
 </body>
 </html>
