@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luc Pommeret — Représentation platonique du Morpion</title>
+    <title>L'Hypothèse de Représentation Platonique dans un petit monde : le Morpion</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
-    <link rel="alternate icon" href="../assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
+    <link rel="alternate icon" href="../assets/favicon.ico">
     <link rel="mask-icon" href="../assets/logo.svg" color="#0e7862">
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -109,51 +112,247 @@
     <div class="content-margin-container">
         <div class="margin-left-block">
             <ul class="side-menu">
-                <li><a href="../index.html" data-translate="menu_home"></a></li>
-                <li><a href="../projets.html" data-translate="menu_projects"></a></li>
-                <li><a href="../blog.html" data-translate="menu_blog"></a></li>
-                <li><a href="https://github.com/l-pommeret" data-translate="github"></a></li>
+                <li><a href="../index.html" data-translate="menu_home">Accueil</a></li>
+                <li><a href="../projets.html" data-translate="menu_projects">Projets</a></li>
+                <li><a href="../blog.html" data-translate="menu_blog">Blog</a></li>
+                <li><a href="https://github.com/l-pommeret" data-translate="github">GitHub</a></li>
             </ul>
         </div>
         <div class="main-content-block">
-            <h1 data-translate="project_title"></h1>
-            <p data-translate="project_description"></p>
+            <h1>L'Hypothèse de Représentation Platonique dans un petit monde : le Morpion</h1>
+            <p class="header">Par Luc Pommeret</p>
             
-            <h2 data-translate="introduction"></h2>
-            <p data-translate="intro_text"></p>
+            <div class="abstract">
+                <h2>Résumé</h2>
+                <p>Ce projet s'inspire de l'article de juin 2024 de Philip Isola et ses étudiants : Platonic Representation Hypothesis. L'idée centrale est que les modèles entraînés sur différents types de données (image, audio, texte) convergent vers la même représentation dans l'espace latent. Le code pour l'entraînement des transformers est basé sur le travail d'Andrej Karpathy (nanoGPT). Dans ce projet, nous testons cette hypothèse sur un monde très simple : le Morpion. Nous entraînons deux transformers avec la même architecture et le même nombre de paramètres sur : 1) des images PNG de parties, 2) des parties en notation textuelle standard.</p>
+                <p>Tout le code est disponible sur GitHub à cette adresse : <a href="https://github.com/l-pommeret/platonic_representation">https://github.com/l-pommeret/platonic_representation</a></p>
+            </div>
+
+            <h2>Introduction</h2>
+            <p>Les LLMs sont des modèles dont la performance sur le langage humain n'est plus à démontrer. Fondée sur l'architecture <i>transformer</i>, leurs capacités hors-norme semblent parfois nous échapper, si bien qu'on ne comprend pas toujours comment le modèle infère ce qu'il infère.</p>
+            <p>Une hypothèse en particulier a attiré notre attention, parce qu'elle semble faire la synthèse de nombreuses observations éparses que l'on a pu faire dans le domaine de l'interprétabilité (ou explicabilité). Il s'agit de la PRH, ou <i>Platonic Representation Hypothesis</i>, qui postule que les modèles de <i>transformer</i> se forgent un modèle de représentation du monde durant l'entraînement, résultant de la recherche de simplicité que recherche naturellement un réseau de neurones qui apprend.</p>
+            <p>La conséquence la plus surprenante de leur hypothèse est que des modèles entraînés sur différents types de données (images, texte, sons, etc.) vont converger vers la même représentation dans leur <i>espace latent</i>. Notre but ici sera d'étudier en profondeur un cas simple, très simple, celui du Morpion. Dans ce jeu, dont l'ensemble des parties peut être généré en quelques minutes par un ordinateur moderne, le monde est très simple, et ne nécessite pas une immense puissance de calcul, autre avantage dont nous pourrons tirer parti.</p>
+            <p>Ici nous allons étudier les représentations de deux <i>transformers</i> : l'un est entraîné sur des images du jeu, et l'autre sur des séquences de coups sous forme de texte.</p>
             
-            <h2 data-translate="quick_start"></h2>
-            <p data-translate="dependencies"></p>
-            <pre><code data-translate="dependencies_code"></code></pre>
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_img.png" alt="Représentations textuelles et imagées du Morpion">
+            
+            <p>L'hypothèse principale que nous voulons tester est en somme si les deux représentations d'une même partie de Morpion convergent.</p>
+            <p>Pour préparer le terrain et explorer d'autres aspects de l'interprétation de l'architecture <i>transformer</i>, nous allons effectuer des tests à l'aide d'autres techniques, à commencer par le <i>sondage</i> (<i>probing</i>).</p>
 
-            <h2 data-translate="text_games"></h2>
-            <p data-translate="text_games_example"></p>
-            <p data-translate="text_games_generate"></p>
-            <pre><code data-translate="text_games_code"></code></pre>
+            <h2>Comment représenter une partie de Morpion ?</h2>
+            <p>Le morpion, comme les échecs ou les dames, est un jeu de plateau. Mais contrairement aux deux derniers, il est extrêmement simple, ce qui permet la complétude de l'analyse (on génère toutes les parties possibles, et on analyse notre <i>transformer</i> avec toutes ces parties).</p>
+            <p>Une manière très simple, voire enfantine, de représenter une partie de morpion est de la noter sous forme de dessin, côte à côte, en montrant l'état du plateau à chaque trait. C'est le format que nous avons choisi pour les images, qui ont donc une taille 9x9.</p>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/game.png" alt="Représentation d'une partie de Morpion">
+            
+            <p>Pour noter les parties de Morpion textuellement, nous avons choisi de noter les coups les uns à la suite des autres, comme le format PGN aux échecs, ce qui donne un historique de la partie.</p>
+            <p>Le format du jeu de Morpion étant ce qu'il est, le nombre de coups ne peut excéder 9, ce qui est bien pratique pour la tokénisation, première étape de l'apprentissage.</p>
+            <p>Voici les tokénisations respectives des images et des textes (que l'on trouve dans les fichiers <code>meta.pkl</code>) :</p>
+            
+            <pre>
+{
+"vocab_size": 4,
+"itos": {"0": "b", "1": "n", "2": "g", "3": ";"},
+"stoi": {"b": 0, "n": 1, "g": 2, ";": 3}
+}
+            </pre>
+            
+            <pre>
+{
+"vocab_size": 10,
+"itos": {"0": ";", "1": " ", "2": "0", "3": "1", "4": "2", "5": "3", "6": "X", "7": "O", "8": "/", "9": "-"},
+"stoi": {";": 0, " ": 1, "0": 2, "1": 3, "2": 4, "3": 5, "X": 6, "O": 7, "/": 8, "-": 9}
+}
+            </pre>
+            
+            <p>Les <i>stoi</i> et les <i>itos</i> ne sont pas grecs, mais un format de données qui permet de convertir les chaînes de caractères (strings) en entiers naturels (integers), c'est-à-dire string to integer ou plus simplement <i>stoi</i>, l'<i>itos</i> étant l'opération réciproque.</p>
+            <p>La tokénisation des images repose sur le pixel, qui sera blanc, valeur 0 (représenté par 'b'), si la case est saturée par un X, noire, valeur 1 (représenté par 'n'), si la case est saturée par un O, et grise, valeur 2 (représenté par 'g') si la case est vide. L'image est parcourue de manière naturelle, ligne par ligne pour former une ligne au format <code>str</code> (string).</p>
+            <p>Dans les deux cas, ";" est le token de début, celui qui marque le début de la séquence pour les images comme pour les textes.</p>
 
-            <h3 data-translate="train_text_transformer"></h3>
-            <pre><code data-translate="train_text_code"></code></pre>
+            <h2>Probing</h2>
+            <p>Le <i>probing</i> (ou sondage) est une technique permettant de détecter la présence de propriétés dans un réseau de neurones. C'est une technique qui a été abondamment utilisée depuis 2018 et l'article Manning et al. qui l'applique à la détection d'arbres syntaxiques dans un transformer entraîné sur un corpus de textes étiquetés.</p>
+            <p>Ici, nous voulons utiliser le <i>probing</i> pour détecter la présence ou non d'une représentation du plateau de morpion, couche par couche dans le <i>transformer</i>. L'idée est d'entraîner un classifieur linéaire case par case et couche par couche pour qu'il détecte l'état d'une case (X, O ou vide). La technique utilisée ici est une généralisation du SVM originel, appelée <i>OneVsRest</i>.</p>
 
-            <h3 data-translate="sample_text_model"></h3>
-            <pre><code data-translate="sample_text_code"></code></pre>
+            <h3>Qu'est-ce qu'un SVM linéaire ?</h3>
+            <p>Le SVM (Support Vector Machine) linéaire est une technique d'apprentissage supervisé utilisée pour la classification. Dans le cas binaire, l'objectif est de trouver un hyperplan qui sépare au mieux les deux classes de données. Dans le cas linéaire qui nous occupe, il s'agit donc de trouver l'hyperplan qui explique le mieux la séparation des données dans le réseau de neurones.</p>
+            <p>Soit un ensemble de données d'entraînement \(\{(x_i, y_i)\}_{i=1}^n\), où \(x_i \in \mathbb{R}^d\) sont les vecteurs de caractéristiques et \(y_i \in \{-1, +1\}\) sont les étiquettes de classe.</p>
+            <p>L'hyperplan séparateur est défini par l'équation :</p>
+            <p>\[w^T x + b = 0\]</p>
+            <p>où \(w \in \mathbb{R}^d\) est le vecteur normal à l'hyperplan et \(b \in \mathbb{R}\) est le biais.</p>        
 
-            <h2 data-translate="image_games"></h2>
-            <p data-translate="image_games_description"></p>
-            <img src="https://github.com/l-pommeret/platonic_representation/blob/main/assets/game1.png?raw=true" alt="A image game" style="max-width: 100%; height: auto;">
-            <p data-translate="image_games_generate"></p>
-            <pre><code data-translate="image_games_code"></code></pre>
+            
 
-            <h3 data-translate="train_image_transformer"></h3>
-            <pre><code data-translate="train_image_code"></code></pre>
+            <h4>Problème d'optimisation</h4>
+            <p>Le SVM cherche à maximiser la marge entre l'hyperplan et les points les plus proches de chaque classe. Cela se traduit par le problème d'optimisation suivant :</p>
+            
+            \[
+            \begin{aligned}
+            \min_{w,b} &\quad \frac{1}{2} \|w\|^2 \\
+            \text{s.c.} &\quad y_i(w^T x_i + b) \geq 1, \quad i = 1, \ldots, n
+            \end{aligned}
+            \]
+            
+            <p>En utilisant les multiplicateurs de Lagrange, on obtient la formulation duale :</p>
+            
+            \[
+            \begin{aligned}
+            \max_{\alpha} &\quad \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j x_i^T x_j \\
+            \text{s.c.} &\quad \sum_{i=1}^n \alpha_i y_i = 0 \\
+            &\quad 0 \leq \alpha_i \leq C, \quad i = 1, \ldots, n
+            \end{aligned}
+            \]
+            
+            <p>où \(\alpha_i\) sont les multiplicateurs de Lagrange et C est un paramètre de régularisation.</p>
+            <p>Une fois les \(\alpha_i\) optimaux trouvés, la fonction de décision pour un nouveau point x est :</p>
+            <p>\[f(x) = \text{sign}\left(\sum_{i=1}^n \alpha_i y_i x_i^T x + b\right)\]</p>
+            <p>où b est calculé en utilisant les vecteurs de support (points pour lesquels \(\alpha_i > 0\)).</p>
+        
 
-            <h3 data-translate="sample_image_model"></h3>
-            <pre><code data-translate="sample_image_code"></code></pre>
+            <h4>Extension multi-classe</h4>
+            <p>Dans notre code, une approche <i>One-vs-Rest</i> est utilisée pour étendre le SVM binaire au cas multi-classe. Pour K classes, on entraîne K classifieurs binaires, chacun séparant une classe de toutes les autres.</p>
 
-            <h2 data-translate="probing"></h2>
-            <p data-translate="probing_description"></p>
-            <pre><code data-translate="probing_code"></code></pre>
+            <h3>Les résultats couche par couche</h3>
+            <p>Le transformer est une architecture assez complexe qui permet de multiples points de sonde. Nous avons donc voulu sonder les moindres recoins de celui-ci pour avoir une idée de la représentation du plateau de morpion à chaque étape.</p>
+            <p>Voici les résultats en prenant la précision de l'évaluation du SVM couche par couche pour le texte.</p>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_probe_points.png" alt="Probing couche par couche pour le texte">
+            
+            <p>Nous pouvons observer que le transformer acquiert petit à petit une représentation de l'état du plateau de morpion, qui culmine lors de la normalisation post-attention et de la seconde couche du MLP.</p>
+            <p>Pour le modèle entraîné sur les images, le résultat est très différent, puisque la courbe reste quasiment plate tout du long du <i>transformer</i>.</p>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_probe_points.png" alt="Probing couche par couche pour les images">
+            
+            <p>On remarque que le modèle ne forge pas de représentation du plateau de Morpion, ce qui peut interroger. Pour répondre à cela, nous pouvons formuler l'hypothèse qu'étant donné que pour résoudre la tâche (prédire le prochain token), il faut avoir une représentation sur laquelle se reposer à au moins un moment, il n'y a pas besoin de se forger une représentation lorsqu'on a déjà l'image en entrée, alors que c'est nécessaire lorsqu'on n'a que le texte.</p>
+            <p>Nous pouvons également nous intéresser à la représentation des cases (<i>positions</i>), qui montre des effets de symétrie et d'asymétrie assez intéressants.</p>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_positions_all_points.png" alt="Probing couche par couche pour le texte (positions)">
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_positions_all_points.png" alt="Probing couche par couche pour les images (positions)">
+            
+            <p>Une observation générale est que très souvent, dans la plupart des couches des deux modèles, c'est la case du milieu (position 5) qui est la mieux représentée.</p>
+            <p>Ensuite, nous pouvons observer de belles symétries, surtout pour le texte, et certaines couches, qui montrent une représentation géométrique du plateau, qui évolue en fonction de la couche. Par exemple, dans le modèle d'image, la couche de normalisation pré-attention avantage clairement la case centrale, tandis que plus on s'approche de la sortie, moins cette case du milieu est favorisée, au profit d'autres cases, comme si l'analyse effectuait un mouvement concentrique vers les bords du plateau.</p>
 
-            <p data-translate="conclusion"></p>
+            <h2>La PRH se vérifie-t-elle ?</h2>
+
+            <h3>Quelles métriques ?</h3>
+            <p>Suivant la littérature antérieure, nous définissons l'<i>alignement représentationnel</i> comme une mesure de la similarité des structures de similarité induites par deux représentations, c'est-à-dire une métrique de similarité sur les noyaux. Nous donnons la définition mathématique de ces concepts ci-dessous :</p>
+            <ul>
+                <li>Une <strong>représentation</strong> est une fonction f : X → ℝ^n qui attribue un vecteur de caractéristiques à chaque entrée dans un certain domaine de données X.</li>
+                <li>Un <strong>noyau</strong>, K : X × X → ℝ, caractérise comment une représentation mesure la distance/similarité entre les points de données. K(x_i,x_j)=⟨f(x_i),f(x_j)⟩, où ⟨·,·⟩ désigne le produit scalaire, x_i,x_j ∈ X et K ∈ 𝒦.</li>
+                <li>Une <strong>métrique d'alignement de noyau</strong>, m : 𝒦 × 𝒦 → ℝ, mesure la similarité entre deux noyaux, c'est-à-dire à quel point la mesure de distance induite par une représentation est similaire à celle induite par une autre. Les exemples incluent la Distance de Noyau Centrée (CKA), SVCCA, et les métriques des plus proches voisins.</li>
+            </ul>
+
+            <h3>Métriques d'alignement</h3>
+
+            <h4>Cycle KNN (K plus proches voisins cycliques)</h4>
+            <p><strong>Définition mathématique</strong><br>
+            Soient A et B deux ensembles de vecteurs de caractéristiques, chacun de taille N. Pour un k donné :</p>
+            <ol>
+                <li>Calculer les k-NN dans A : Pour chaque point dans A, trouver ses k plus proches voisins dans A.</li>
+                <li>Mapper ces voisins vers B.</li>
+                <li>Calculer les k-NN dans B pour ces points mappés.</li>
+                <li>Vérifier si le point original dans A est parmi ces voisins.</li>
+            </ol>
+            <p>La métrique est la fraction de points qui "survivent" à ce cycle.</p>
+            <p><strong>Formule</strong></p>
+            \[
+            \text{Cycle\_KNN}(A, B) = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(a_i \in \text{kNN}_B(\text{kNN}_A(a_i)))
+            \]
+            <p>où \(\mathbb{I}\) est la fonction indicatrice, et \(\text{kNN}_X(y)\) renvoie les k plus proches voisins de y dans X.</p>
+        
+            <p><strong>Interprétation</strong></p>
+            <ul>
+                <li>Plage : [0, 1]</li>
+                <li>Des valeurs plus élevées indiquent un meilleur alignement entre les deux espaces de caractéristiques.</li>
+                <li>Une valeur de 1 signifie une parfaite consistance cyclique : la structure de voisinage est parfaitement préservée lors du mapping de A vers B et retour.</li>
+                <li>Des valeurs plus basses suggèrent que la structure locale n'est pas bien préservée entre les deux espaces.</li>
+            </ul>
+
+            <h4>KNN mutuel (K plus proches voisins mutuels)</h4>
+            <p><strong>Définition mathématique</strong><br>
+            Pour chaque point dans A, vérifier s'il est parmi les k-plus proches voisins de son point correspondant dans B, et vice versa.</p>
+            <p><strong>Formule</strong></p>
+            \[
+            \text{Mutual\_KNN}(A, B) = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(a_i \in \text{kNN}_B(b_i) \text{ ET } b_i \in \text{kNN}_A(a_i))
+            \]
+            <p>où \(\mathbb{I}\) est la fonction indicatrice, et \(\text{kNN}_X(y)\) renvoie les k plus proches voisins de y dans X.</p>
+        
+            <p><strong>Interprétation</strong></p>
+            <ul>
+                <li>Plage : [0, 1]</li>
+                <li>Des valeurs plus élevées indiquent une meilleure préservation mutuelle du voisinage entre les deux espaces.</li>
+                <li>Une valeur de 1 signifie que tous les points sont des k-plus proches voisins mutuels dans les deux espaces.</li>
+                <li>Des valeurs plus basses suggèrent que les structures de voisinage dans A et B sont différentes.</li>
+            </ul>
+
+            <h4>CKA (Alignement de Noyau Centré)</h4>
+            <p><strong>Définition mathématique</strong><br>
+            CKA mesure la similarité entre deux noyaux après centrage.</p>
+            <p><strong>Formule</strong></p>
+            \[
+            \text{CKA}(K, L) = \frac{\langle K_c, L_c \rangle_F}{\|K_c\|_F \|L_c\|_F}
+            \]
+            <p>où \(K_c\) et \(L_c\) sont des matrices de noyau centrées, \(\langle \cdot,\cdot \rangle_F\) est le produit scalaire de Frobenius, et \(\|\cdot\|_F\) est la norme de Frobenius.</p>
+        
+            <p><strong>Interprétation</strong></p>
+            <ul>
+                <li>Plage : [0, 1]</li>
+                <li>Des valeurs plus élevées indiquent une plus grande similarité entre les matrices de noyau.</li>
+                <li>Une valeur de 1 suggère que les deux noyaux capturent des relations identiques entre les points de données.</li>
+                <li>Des valeurs plus basses indiquent que les noyaux capturent des relations différentes.</li>
+                <li>CKA est invariant aux transformations orthogonales et à la mise à l'échelle isotrope.</li>
+            </ul>
+
+            <h4>SVCCA (Analyse de Corrélation Canonique des Vecteurs Singuliers)</h4>
+            <p><strong>Définition mathématique</strong></p>
+            <ol>
+                <li>Effectuer la SVD sur les deux matrices de caractéristiques : A = U_A Σ_A V_A^T, B = U_B Σ_B V_B^T</li>
+                <li>Prendre les d premiers vecteurs singuliers : Ũ_A, Ũ_B</li>
+                <li>Effectuer la CCA sur ces matrices tronquées</li>
+            </ol>
+            <p><strong>Formule</strong></p>
+    \[
+    \text{SVCCA}(A, B) = \frac{1}{d} \sum_{i=1}^d \rho_i
+    \]
+    <p>où \(\rho_i\) sont les corrélations canoniques entre \(\tilde{U}_A\) et \(\tilde{U}_B\).</p>
+    
+    <p>Les étapes pour calculer SVCCA sont :</p>
+    <ol>
+        <li>Effectuer la SVD sur les deux matrices de caractéristiques : 
+            \[A = U_A \Sigma_A V_A^T, \quad B = U_B \Sigma_B V_B^T\]
+        </li>
+        <li>Prendre les d premiers vecteurs singuliers : \(\tilde{U}_A, \tilde{U}_B\)</li>
+        <li>Effectuer la CCA sur ces matrices tronquées</li>
+    </ol>
+            <p><strong>Interprétation</strong></p>
+            <ul>
+                <li>Plage : [0, 1]</li>
+                <li>Des valeurs plus élevées indiquent une corrélation plus forte entre les composantes principales des deux espaces de caractéristiques.</li>
+                <li>Une valeur proche de 1 suggère que les principales directions de variation dans les deux espaces sont fortement alignées.</li>
+                <li>Des valeurs plus basses indiquent que les composantes principales des deux espaces capturent différents aspects des données.</li>
+                <li>SVCCA est moins sensible au bruit comparé à la simple CCA, en raison de l'étape initiale de SVD.</li>
+            </ul>
+
+            <h3>Conclusion</h3>
+            <p>Ces métriques fournissent différentes perspectives sur l'alignement entre deux ensembles de caractéristiques :</p>
+            <ul>
+                <li>Cycle KNN et Mutual KNN sont plus sensibles aux structures locales et peuvent être utiles pour détecter des alignements fins.</li>
+                <li>CKA est plus robuste et capture des similarités globales, mais peut manquer des détails fins.</li>
+                <li>SVCCA est utile pour comparer les principales directions de variation, mais peut ignorer les caractéristiques moins importantes.</li>
+            </ul>
+            <p>En pratique, il est souvent bénéfique d'utiliser plusieurs de ces métriques ensemble pour obtenir une image plus complète de l'alignement entre deux ensembles de caractéristiques.</p>
+
+            <h3>Les résultats</h3>
+            
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/metrics_comparison.png" alt="Différentes métriques pour comparer la distance des représentations entre les deux modèles">
+            
+            <h2>Bibliographie</h2>
+            <ol>
+                <li>Huh, M., Cheung, B., Wang, T., & Isola, P. (2024). The Platonic Representation Hypothesis. <i>arXiv preprint</i>.</li>
+                <li>Kornblith, S., Norouzi, M., Lee, H., & Hinton, G. (2019). Similarity of neural network representations revisited. In <i>International Conference on Machine Learning</i> (pp. 3519-3529). PMLR.</li>
+                <li>Raghu, M., Gilmer, J., Yosinski, J., & Sohl-Dickstein, J. (2017). SVCCA: Singular vector canonical correlation analysis for deep learning dynamics and interpretability. In <i>Advances in Neural Information Processing Systems</i> (pp. 6076-6085).</li>
+                <li>Karvonen, A. (2024). Emergent World Models and Latent Variable Estimation in Chess-Playing Language Models. <i>arXiv preprint</i>.</li>
+            </ol>
         </div>
         <div class="margin-right-block"></div>
     </div>
@@ -161,69 +360,15 @@
     <script>
         const translations = {
             'fr': {
-                'project_title': 'Représentation platonique du Morpion',
                 'menu_home': 'Accueil',
                 'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
-                'project_description': 'Étude des représentations internes d\'un transformer entraîné sur le jeu de Morpion',
-                'introduction': 'Introduction',
-                'intro_text': 'Ce projet s\'inspire de l\'article de juin 2024 de Philip Isola et ses étudiants : Platonic Representation Hypothesis. L\'idée centrale est que les modèles entraînés sur différents types de données (image, audio, texte) convergent vers la même représentation dans l\'espace latent. Le code pour l\'entraînement des transformers est basé sur le travail d\'Andrej Karpathy (nanoGPT). Dans ce projet, nous testons cette hypothèse sur un monde très simple : le Morpion. Nous entraînons deux transformers avec la même architecture et le même nombre de paramètres sur : 1) des images PNG de parties, 2) des parties en notation textuelle standard.',
-                'quick_start': 'Démarrage rapide',
-                'dependencies': 'Installation des dépendances',
-                'dependencies_code': 'pip install torch numpy transformers datasets tiktoken wandb tqdm',
-                'text_games': 'Jeux textuels',
-                'text_games_example': 'Exemple d\'une partie de morpion : ;X21 O23 X22 O31 X33 O32 X11',
-                'text_games_generate': 'Vous pouvez générer toutes les parties textuelles possibles avec :',
-                'text_games_code': 'python txt_game_generator.py',
-                'train_text_transformer': 'Entraînement du transformer basé sur le texte',
-                'train_text_code': 'cd platonic_representation\npython data/txt/prepare_txt.py\npython train.py config/train_txt.py',
-                'sample_text_model': 'Échantillonnage pour le modèle textuel',
-                'sample_text_code': 'python sample.py --out_dir=out-shakespeare-char',
-                'image_games': 'Jeux en images',
-                'image_games_description': 'Les images sont des fichiers PNG de 12x12, contenant chacun une partie. L\'état des cases est indiqué par des niveaux de gris :',
-                'image_games_generate': 'Vous pouvez générer des jeux en images (basés sur les jeux textuels) avec :',
-                'image_games_code': 'python img_game_generator.py',
-                'train_image_transformer': 'Entraînement du transformer basé sur l\'image',
-                'train_image_code': 'cd platonic_representation\npython img_game_generator.py\npython data/img/prepare_img.py\npython train.py config/train_img.py',
-                'sample_image_model': 'Échantillonnage pour le modèle d\'image',
-                'sample_image_code': 'python sample.py --out_dir=out-shakespeare-char',
-                'probing': 'Analyse couche par couche pour le texte',
-                'probing_description': 'Pour exécuter les sondes linéaires couche par couche (voir les graphiques dans /assets), vous pouvez lancer :',
-                'probing_code': 'python probing_txt.py',
-                'conclusion': 'Ce projet est actuellement en développement. Si vous avez des questions, n\'hésitez pas à me contacter !',
                 'github': 'GitHub'
             },
             'en': {
-                'project_title': 'Platonic Representation of Tic-Tac-Toe',
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
                 'menu_blog': 'Blog',
-                'project_description': 'Study of internal representations of a transformer trained on the Tic-Tac-Toe game',
-                'introduction': 'Introduction',
-                'intro_text': 'This project draws inspiration from the June 2024 article by Philip Isola and his students: Platonic Representation Hypothesis. The central idea is that models trained on different data types (image, audio, text) converge towards the same representation in latent space. The code for training the transformers is based on the work of Andrej Karpathy (nanoGPT). In this project, we test this hypothesis on a very simple world: Tic-tac-toe. We train two transformers with the same architecture and number of parameters on: 1) PNG images of games, 2) Games in standard textual notation.',
-                'quick_start': 'Quick Start',
-                'dependencies': 'Installing Dependencies',
-                'dependencies_code': 'pip install torch numpy transformers datasets tiktoken wandb tqdm',
-                'text_games': 'Text-games',
-                'text_games_example': 'Example of a tic-tac-toe game: ;X21 O23 X22 O31 X33 O32 X11',
-                'text_games_generate': 'You can generate all the possible text-games with:',
-                'text_games_code': 'python txt_game_generator.py',
-                'train_text_transformer': 'Training the Text-Based Transformer',
-                'train_text_code': 'cd platonic_representation\npython data/txt/prepare_txt.py\npython train.py config/train_txt.py',
-                'sample_text_model': 'Sampling for the Text Model',
-                'sample_text_code': 'python sample.py --out_dir=out-shakespeare-char',
-                'image_games': 'Image-games',
-                'image_games_description': 'The images are 12x12 png files, which contains one game each. The state of the square are denoted by gray-scale:',
-                'image_games_generate': 'You can generate img-games (based on text-games) with:',
-                'image_games_code': 'python img_game_generator.py',
-                'train_image_transformer': 'Training the Image-Based Transformer',
-                'train_image_code': 'cd platonic_representation\npython img_game_generator.py\npython data/img/prepare_img.py\npython train.py config/train_img.py',
-                'sample_image_model': 'Sampling for the Image Model',
-                'sample_image_code': 'python sample.py --out_dir=out-shakespeare-char',
-                'probing': 'Probing layer by layer for txt',
-                'probing_description': 'To run the linear probes layer by layer (see graphs in /assets), you can run:',
-                'probing_code': 'python probing_txt.py',
-                'conclusion': 'This project is currently under development. Should you have any questions, please don\'t hesitate to contact me!',
                 'github': 'GitHub'
             }
         };
@@ -232,12 +377,14 @@
             document.documentElement.lang = lang;
             document.querySelectorAll('[data-translate]').forEach(elem => {
                 const key = elem.getAttribute('data-translate');
-                elem.innerHTML = translations[lang][key];
+                if (translations[lang][key]) {
+                    elem.innerHTML = translations[lang][key];
+                }
             });
         }
 
         // Initialize with French
-        changeLanguage('en');
+        changeLanguage('fr');
     </script>
 </body>
 </html>
