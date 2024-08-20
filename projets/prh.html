@@ -209,19 +209,17 @@
             <h4>Multi-class Extension</h4>
             <p>In our code, a <i>One-vs-Rest</i> approach is used to extend the binary SVM to the multi-class case. For K classes, we train K binary classifiers, each separating one class from all the others.</p>
 
-            <h3>Layer-by-Layer Results </h3>
-
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_probe.png" alt="Probing layer by layer for text">
+            <h3>Layer-by-Layer Results</h3>
 
             <p>The transformer is a rather complex architecture that allows for multiple probe points. We therefore wanted to probe every nook and cranny of it to get an idea of the representation of the Tic-Tac-Toe board at each step.</p>
             <p>Here are the results taking the accuracy of the SVM evaluation layer by layer for the text.</p>
 
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_accuracy_across_probe_points.png" alt="Probing layer by layer for text">
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/txt_probe.png" alt="Probing layer by layer for text">
             
             <p>We can observe that the transformer gradually acquires a representation of the state of the Tic-Tac-Toe board, which culminates during post-attention normalization and the second layer of the MLP.</p>
             <p>For the model trained on images, the result is very different, as the curve remains almost flat throughout the <i>transformer</i>.</p>
             
-            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_accuracy_across_probe_points.png" alt="Probing layer by layer for images">
+            <img src="https://raw.githubusercontent.com/l-pommeret/platonic_representation/main/assets/img_probe.png" alt="Probing layer by layer for images">
             
             <p>We notice that the model does not forge a representation of the Tic-Tac-Toe board, which may raise questions. To answer this, we can hypothesize that given that to solve the task (predicting the next token), one needs to have a representation to rely on at least at one point, there is no need to forge a representation when one already has the image as input, whereas it is necessary when one only has the text.</p>
             <p>We can also look at the representation of the cells (<i>positions</i>), which shows some interesting symmetry and asymmetry effects.</p>
