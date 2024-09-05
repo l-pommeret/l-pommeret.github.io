@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luc Pommeret — Notebook SAE</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="alternate icon" href="assets/favicon.ico">
+    <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <style>
+        body {
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #f5f9ff;
+        }
+        .content-margin-container {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .main-content-block {
+            width: 130%;
+            max-width: 1100px;
+            background-color: #fff;
+            border-left: 1px solid #DDD;
+            border-right: 1px solid #DDD;
+            padding: 16px;
+        }
+        .margin-left-block, .margin-right-block {
+            font-size: 14px;
+            width: 10%;
+            max-width: 100px;
+            position: relative;
+            margin-left: 5px;
+            text-align: left;
+            padding: 5px;
+        }
+        .margin-left-block {
+            position: sticky;
+            top: 20px;
+        }
+        h1 {
+            font-size: 32px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        a {
+            color: #0e7862;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #24b597;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .side-menu {
+            list-style-type: none;
+            padding: 0;
+        }
+        .side-menu li {
+            margin-bottom: 10px;
+        }
+        .notebook-container {
+            width: 100%;
+            height: 800px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <select id="languageSelector" onchange="changeLanguage(this.value)">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+    </select>
+
+    <div class="content-margin-container">
+        <div class="margin-left-block">
+            <ul class="side-menu">
+                <li><a href="index.html" data-translate="menu_home"></a></li>
+                <li><a href="projets.html" data-translate="menu_projects"></a></li>
+                <li><a href="blog.html" data-translate="menu_blog"></a></li>
+                <li><a href="https://github.com/l-pommeret" data-translate="github"></a></li>
+            </ul>
+        </div>
+        <div class="main-content-block">
+            <h1 data-translate="notebook_title"></h1>
+            <p data-translate="notebook_description"></p>
+            <iframe src="https://hub.binder.curvenote.dev/user/l-pommeret-llm_neurochirurgy-e2mzwyx0/lab/workspaces/auto-C/tree/SAE.ipynb" class="notebook-container"></iframe>
+        </div>
+        <div class="margin-right-block"></div>
+    </div>
+
+    <script>
+        const translations = {
+            'fr': {
+                'notebook_title': 'Notebook SAE',
+                'notebook_description': 'Voici le notebook SAE intégré depuis Binder. Vous pouvez interagir directement avec le notebook ci-dessous.',
+                'menu_home': 'Accueil',
+                'menu_projects': 'Projets',
+                'menu_blog': 'Blog',
+                'github': 'GitHub'
+            },
+            'en': {
+                'notebook_title': 'SAE Notebook',
+                'notebook_description': 'Here is the SAE notebook integrated from Binder. You can interact directly with the notebook below.',
+                'menu_home': 'Home',
+                'menu_projects': 'Projects',
+                'menu_blog': 'Blog',
+                'github': 'GitHub'
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-translate]').forEach(elem => {
+                const key = elem.getAttribute('data-translate');
+                elem.innerHTML = translations[lang][key];
+            });
+        }
+
+        // Initialize with French
+        changeLanguage('en');
+    </script>
+</body>
+</html>
