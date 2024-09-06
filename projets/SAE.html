@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luc Pommeret — Notebook SAE</title>
+    <title>Notebook Google Colab</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
     <link rel="alternate icon" href="assets/favicon.ico">
     <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
     <style>
         body {
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -76,10 +75,15 @@
         .side-menu li {
             margin-bottom: 10px;
         }
-        .notebook-container {
+        #notebook-container {
             width: 100%;
-            height: 800px;
-            border: none;
+            height: 600px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            overflow: auto;
+        }
+        .CodeMirror {
+            height: auto;
         }
     </style>
 </head>
@@ -101,7 +105,7 @@
         <div class="main-content-block">
             <h1 data-translate="notebook_title"></h1>
             <p data-translate="notebook_description"></p>
-            <iframe src="https://hub.binder.curvenote.dev/user/l-pommeret-llm_neurochirurgy-e2mzwyx0/lab/workspaces/auto-C/tree/SAE.ipynb" class="notebook-container"></iframe>
+            <div id="notebook-container"></div>
         </div>
         <div class="margin-right-block"></div>
     </div>
@@ -109,16 +113,16 @@
     <script>
         const translations = {
             'fr': {
-                'notebook_title': 'Notebook SAE',
-                'notebook_description': 'Voici le notebook SAE intégré depuis Binder. Vous pouvez interagir directement avec le notebook ci-dessous.',
+                'notebook_title': 'Notebook Google Colab',
+                'notebook_description': 'Voici le contenu du notebook Google Colab intégré directement dans la page.',
                 'menu_home': 'Accueil',
                 'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
                 'github': 'GitHub'
             },
             'en': {
-                'notebook_title': 'SAE Notebook',
-                'notebook_description': 'Here is the SAE notebook integrated from Binder. You can interact directly with the notebook below.',
+                'notebook_title': 'Google Colab Notebook',
+                'notebook_description': 'Here is the content of the Google Colab notebook integrated directly into the page.',
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
                 'menu_blog': 'Blog',
@@ -135,7 +139,40 @@
         }
 
         // Initialize with French
-        changeLanguage('en');
+        changeLanguage('fr');
+
+        // Function to load and display the notebook
+        function loadNotebook() {
+            const notebookId = '19iGE1yYrus0oSuhnJzUI972ZTGbLhvC6';
+            const apiUrl = `https://colab.research.google.com/drive/${notebookId}`;
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    const container = document.getElementById('notebook-container');
+                    const cells = data.match(/<div class="cell code_cell">[\s\S]*?<\/div>/g);
+
+                    cells.forEach(cell => {
+                        const codeElement = cell.match(/<pre>([\s\S]*?)<\/pre>/);
+                        if (codeElement) {
+                            const code = codeElement[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                            const editor = CodeMirror(container, {
+                                value: code,
+                                mode: 'python',
+                                lineNumbers: true,
+                                readOnly: true
+                            });
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading notebook:', error);
+                    document.getElementById('notebook-container').innerHTML = 'Error loading notebook. Please try again later.';
+                });
+        }
+
+        // Load the notebook when the page is ready
+        document.addEventListener('DOMContentLoaded', loadNotebook);
     </script>
 </body>
 </html>
