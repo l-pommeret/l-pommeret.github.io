@@ -5,45 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notebook Google Colab</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
     <link rel="alternate icon" href="assets/favicon.ico">
     <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
     <style>
         body {
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background-color: #f5f9ff;
         }
         .content-margin-container {
             display: flex;
             width: 100%;
-            justify-content: center;
+            justify-content: space-between;
             align-items: flex-start;
         }
         .main-content-block {
-            width: 130%;
-            max-width: 1100px;
+            flex-grow: 1;
             background-color: #fff;
             border-left: 1px solid #DDD;
             border-right: 1px solid #DDD;
             padding: 16px;
+            margin: 0 20px;
         }
-        .margin-left-block, .margin-right-block {
+        .margin-block {
+            width: 150px;
             font-size: 14px;
-            width: 10%;
-            max-width: 100px;
-            position: relative;
-            margin-left: 5px;
-            text-align: left;
-            padding: 5px;
         }
         .margin-left-block {
             position: sticky;
@@ -75,15 +66,16 @@
         .side-menu li {
             margin-bottom: 10px;
         }
-        #notebook-container {
+        #colab-container {
             width: 100%;
-            height: 600px;
-            border: 1px solid #ddd;
+            height: 800px;
+            border: none;
             margin-top: 20px;
-            overflow: auto;
         }
-        .CodeMirror {
-            height: auto;
+        #error-message {
+            color: red;
+            display: none;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -94,7 +86,7 @@
     </select>
 
     <div class="content-margin-container">
-        <div class="margin-left-block">
+        <div class="margin-block margin-left-block">
             <ul class="side-menu">
                 <li><a href="index.html" data-translate="menu_home"></a></li>
                 <li><a href="projets.html" data-translate="menu_projects"></a></li>
@@ -105,28 +97,31 @@
         <div class="main-content-block">
             <h1 data-translate="notebook_title"></h1>
             <p data-translate="notebook_description"></p>
-            <div id="notebook-container"></div>
+            <div id="colab-container"></div>
+            <div id="error-message" data-translate="error_message"></div>
         </div>
-        <div class="margin-right-block"></div>
+        <div class="margin-block margin-right-block"></div>
     </div>
 
     <script>
         const translations = {
             'fr': {
                 'notebook_title': 'Notebook Google Colab',
-                'notebook_description': 'Voici le contenu du notebook Google Colab intégré directement dans la page.',
+                'notebook_description': 'Voici le notebook Google Colab intégré directement dans la page.',
                 'menu_home': 'Accueil',
                 'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
-                'github': 'GitHub'
+                'github': 'GitHub',
+                'error_message': 'Le notebook n\'est pas accessible. Assurez-vous qu\'il est public ou que vous avez les droits d\'accès nécessaires.'
             },
             'en': {
                 'notebook_title': 'Google Colab Notebook',
-                'notebook_description': 'Here is the content of the Google Colab notebook integrated directly into the page.',
+                'notebook_description': 'Here is the Google Colab notebook embedded directly in the page.',
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
                 'menu_blog': 'Blog',
-                'github': 'GitHub'
+                'github': 'GitHub',
+                'error_message': 'The notebook is not accessible. Make sure it is public or that you have the necessary access rights.'
             }
         };
 
@@ -138,41 +133,35 @@
             });
         }
 
-        // Initialize with French
         changeLanguage('fr');
 
-        // Function to load and display the notebook
-        function loadNotebook() {
-            const notebookId = '19iGE1yYrus0oSuhnJzUI972ZTGbLhvC6';
-            const apiUrl = `https://colab.research.google.com/drive/${notebookId}`;
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https://colab.research.google.com/static/colab_favicon.js';
+            script.async = true;
+            document.head.appendChild(script);
 
-            fetch(apiUrl)
-                .then(response => response.text())
-                .then(data => {
-                    const container = document.getElementById('notebook-container');
-                    const cells = data.match(/<div class="cell code_cell">[\s\S]*?<\/div>/g);
+            script.onload = function() {
+                const notebookId = '19iGE1yYrus0oSuhnJzUI972ZTGbLhvC6';
+                const colab_url = `https://colab.research.google.com/drive/${notebookId}`;
+                
+                try {
+                    colab.colab.global.renderNow(document.getElementById('colab-container'), colab_url)
+                        .catch(error => {
+                            console.error('Error loading notebook:', error);
+                            document.getElementById('error-message').style.display = 'block';
+                        });
+                } catch (error) {
+                    console.error('Error initializing Colab render:', error);
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            };
 
-                    cells.forEach(cell => {
-                        const codeElement = cell.match(/<pre>([\s\S]*?)<\/pre>/);
-                        if (codeElement) {
-                            const code = codeElement[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-                            const editor = CodeMirror(container, {
-                                value: code,
-                                mode: 'python',
-                                lineNumbers: true,
-                                readOnly: true
-                            });
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading notebook:', error);
-                    document.getElementById('notebook-container').innerHTML = 'Error loading notebook. Please try again later.';
-                });
-        }
-
-        // Load the notebook when the page is ready
-        document.addEventListener('DOMContentLoaded', loadNotebook);
+            script.onerror = function() {
+                console.error('Failed to load Colab script');
+                document.getElementById('error-message').style.display = 'block';
+            };
+        })();
     </script>
 </body>
 </html>
