@@ -7,7 +7,7 @@
         
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-    <link rel="alternate icon" href="assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
+    <link rel="alternate icon" href="assets/favicon.ico">
     <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
     <style>
         body {
@@ -94,6 +94,19 @@
         .side-menu li {
             margin-bottom: 10px;
         }
+        .document-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #0e7862;
+            color: white;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .document-link:hover {
+            background-color: #24b597;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +138,7 @@
                 <li data-translate="research_topic_2"></li>
                 <li data-translate="research_topic_3"></li>
             </ul>
+            <p><a href="assets/Rapport.pdf" class="document-link" data-translate="internship_report"></a></p>
             
             <h2 data-translate="main_skills"></h2>
             <ul>
@@ -165,7 +179,8 @@
                 'menu_home': 'Accueil',
                 'menu_projects': 'Projets',
                 'menu_blog': 'Blog',
-                'github': 'GitHub'
+                'github': 'GitHub',
+                'internship_report': 'Rapport de stage'
             },
             'en': {
                 'header': 'Graduate Student | 22 years old | Machine Learning and Logic | Research Intern at <a href="https://www.irif.fr">IRIF</a> (Paris 13th)',
@@ -185,7 +200,8 @@
                 'menu_home': 'Home',
                 'menu_projects': 'Projects',
                 'menu_blog': 'Blog',
-                'github': 'GitHub'
+                'github': 'GitHub',
+                'internship_report': 'Internship Report'
             }
         };
 
@@ -197,7 +213,6 @@
             });
         }
 
-        // Initialize with French
         changeLanguage('en');
     </script>
 </body>
