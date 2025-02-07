@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luc Pommeret — Waist of Time</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="alternate icon" href="assets/favicon.ico"> <!-- Fallback pour les navigateurs qui ne supportent pas SVG -->
+    <link rel="mask-icon" href="assets/logo.svg" color="#0e7862">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <style>
+        body {
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #f5f9ff;
+        }
+        .content-margin-container {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .main-content-block {
+            width: 130%;
+            max-width: 1100px;
+            background-color: #fff;
+            border-left: 1px solid #DDD;
+            border-right: 1px solid #DDD;
+            padding: 16px;
+        }
+        .margin-left-block, .margin-right-block {
+            font-size: 14px;
+            width: 10%;
+            max-width: 100px;
+            position: relative;
+            margin-left: 5px;
+            text-align: left;
+            padding: 5px;
+        }
+        .margin-left-block {
+            position: sticky;
+            top: 20px;
+        }
+        h1 {
+            font-size: 32px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 18px;
+            color: #666;
+        }
+        a {
+            color: #0e7862;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #24b597;
+        }
+        .header {
+            font-weight: 300;
+            font-size: 17px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px auto;
+        }
+        .side-menu {
+            list-style-type: none;
+            padding: 0;
+        }
+        .side-menu li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <select id="languageSelector" onchange="changeLanguage(this.value)">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+    </select>
+
+    <div class="content-margin-container">
+        <div class="margin-left-block">
+            <ul class="side-menu">
+                <li><a href="index.html" data-translate="menu_home"></a></li>
+                <li><a href="projets.html" data-translate="menu_projects"></a></li>
+                <li><a href="blog.html" data-translate="menu_blog"></a></li>
+                <li><a href="https://github.com/l-pommeret" data-translate="github"></a></li>
+                <li><a href="waist.html" data-translate="waist"></a></li>
+            </ul>
+        </div>
+        <div class="main-content-block">
+            <h1 data-translate="project_title"></h1>
+            <p data-translate="projects_description"></p>
+            
+            <h2 data-translate="project_1_title"></h2>
+            <p data-translate="project_1_description"></p>
+            
+            <h2 data-translate="project_2_title"></h2>
+            <p data-translate="project_2_description"></p>
+
+            <h2 data-translate="project_3_title"></h2>
+            <p data-translate="project_3_description"></p>
+        </div>
+        <div class="margin-right-block"></div>
+    </div>
+
+    <script>
+        const translations = {
+            'fr': {
+                'project_title' : 'Projets',
+                'menu_home': 'Accueil',
+                'menu_projects': 'Projets',
+                'menu_blog': 'Blog',
+                'projects_description': 'Perdre son temps n\'est pas toujours inutile.',
+                'project_1_title': 'L\'Ethique de Spinoza vérifiée',
+                'project_1_description': 'Le projet de la vérification de la validité logique de l\'Ethique de Spinoza n\'est pas nouvelle (on peut penser aux travaux de Charles Jarrett aux US, ou ceux de Martial Guéroult en France). De même, des tentatives de formalisation en Coq on été entreprises (voir Baptiste Mélès, ou ce compte Github).',
+                'project_2_title': 'chessGPT bruité',
+                'project_2_description': 'Ici, je définis une notion de bruit dans une partie d\'échecs, comme un tirage uniforme parmi les coups légaux. J\'entraîne plusieurs LLMs sur différents taux de bruit (0%, 5%, 50% et 80%) et je constate une meilleure robustesse des modèles entraînés sur plus de bruit (moins de coups illégaux). Ces modèles "bruités" comprennent-ils mieux les règles des échecs ?',
+                'project_3_title': 'Grokking Tic Tac Toe',
+                'project_3_description': 'Ici, je tente d\'entraîner un LLM avec l\'algorithme fastGrok, et 1% des parties possibles au Morpion (Tic Tac Toe), pour vérifier si le modèle finit par comprendre le jeu exhaustivement.',
+                'github': 'GitHub'
+            },
+            'en': {
+                'project_title': 'Projects',
+                'menu_home': 'Home',
+                'menu_projects': 'Projects',
+                'menu_blog': 'Blog',
+                'projects_description': 'Waisting time is not always useless.',
+                'project_1_title': 'Platonic representation of Tic-Tac-Toe',
+                'project_1_description': 'The idea is to deeply study the representations of a transformer trained on Tic-Tac-Toe games. I use various techniques to interpret the transformer\'s layers, including probing and techniques developed in the Platonic Representation Hypothesis paper published in June 2024 by Philip Isola and his students at MIT. <a href="projets/prh.html">Learn more</a>',
+                'project_2_title': 'Noisy chessGPT',
+                'project_2_description': 'Here, I define a notion of noise in a chess game as a uniform draw among legal moves. I train several LLMs on different noise rates (0%, 5%, 50%, and 80%) and observe better robustness in models trained on more noise (fewer illegal moves). Do these "noisy" models better understand the rules of chess?',
+                'project_3_title': 'Grokking Tic Tac Toe',
+                'project_3_description': 'Here, I attempt to train an LLM using the fastGrok algorithm and 1% of possible Tic Tac Toe games to verify if the model eventually understands the game exhaustively.',
+                'github': 'GitHub'
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-translate]').forEach(elem => {
+                const key = elem.getAttribute('data-translate');
+                elem.innerHTML = translations[lang][key];
+            });
+        }
+
+        changeLanguage('en');
+    </script>
+</body>
+</html>
