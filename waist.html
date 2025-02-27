@@ -122,6 +122,31 @@
             
             <h2 data-translate="project_1_title"></h2>
             <p data-translate="project_1_description"></p>
+            
+            <div id="spinoza-project">
+                <h2 data-translate="spinoza_details_title"></h2>
+                <p data-translate="spinoza_intro"></p>
+                
+                <h3 data-translate="spinoza_caveat_title"></h3>
+                <p data-translate="spinoza_caveat"></p>
+                
+                <h3 data-translate="spinoza_content_title"></h3>
+                <p data-translate="spinoza_content"></p>
+                
+                <h3 data-translate="spinoza_requirements_title"></h3>
+                <p data-translate="spinoza_requirements"></p>
+                
+                <h3 data-translate="spinoza_installation_title"></h3>
+                <div data-translate="spinoza_installation"></div>
+                
+                <h3 data-translate="spinoza_execution_title"></h3>
+                <div data-translate="spinoza_execution"></div>
+                
+                <h3 data-translate="spinoza_thanks_title"></h3>
+                <p data-translate="spinoza_thanks"></p>
+                
+                <p><a href="https://github.com/l-pommeret/Projet-Spinoza" target="_blank" data-translate="spinoza_link"></a></p>
+            </div>
         </div>
         <div class="margin-right-block"></div>
     </div>
@@ -137,7 +162,23 @@
                 'project_1_title': 'L\'Ethique de Spinoza vérifiée',
                 'project_1_description': 'Le projet de la vérification de la validité logique de l\'Ethique de Spinoza n\'est pas nouvelle (on peut penser aux travaux de Charles Jarrett aux US, ou ceux de Martial Guéroult en France). De même, des tentatives de formalisation en Coq on été entreprises (voir Baptiste Mélès, ou ce compte Github).',
                 'github': 'GitHub',
-                'waist': 'Perte de temps'
+                'waist': 'Perte de temps',
+                
+                'spinoza_details_title': 'Projet Spinoza - Détails',
+                'spinoza_intro': 'Ce projet est une formalisation en Coq des propositions du Livre I de l\'Éthique de Spinoza, selon la formalisation logique proposée par Charles Jarrett dans son article "The Logical Structure of Spinoza\'s Ethics, Part I" (1978). Je compte continuer avec le livre II prochainement, mais il y a d\'abord un travail de traduction logique à faire ! Ce qui implique des présupposés philosophiques. La formalisation s\'appuie sur la logique modale, permettant de distinguer entre nécessité logique, nécessité naturelle et possibilité.',
+                'spinoza_caveat_title': 'Mise en garde',
+                'spinoza_caveat': 'Ces démonstrations reposent sur une interprétation philosophique (puisque c\'est une formalisation) de l\'Ethique, et donc sont responsabilité partagée de Spinoza et de Charles Jarrett.',
+                'spinoza_content_title': 'Contenu du projet',
+                'spinoza_content': 'Le fichier principal <code>De_Deo.v</code> contient : <ul><li>Les définitions formelles des opérateurs modaux (nécessité logique, possibilité, nécessité naturelle), qui sied à la philosophie de Spinoza</li><li>Le lexique des prédicats unaires, binaires et ternaires correspondant aux concepts spinozistes</li><li>Les axiomes modaux fondamentaux</li><li>Les définitions de Spinoza (causa sui, substance, attribut, mode, Dieu, etc.)</li><li>Les axiomes proposés par Spinoza et complétés par Jarrett</li><li>Les démonstrations formelles des 36 propositions du Livre I (excepté la P33 et la P36 qui sont indérivable du système)</li></ul>',
+                'spinoza_requirements_title': 'Prérequis',
+                'spinoza_requirements': 'Pour exécuter ce projet, vous aurez besoin de : <ol><li><a href="https://coq.inria.fr/" target="_blank">Coq</a> (version 8.13 ou supérieure recommandée)</li><li>Un IDE compatible avec Coq comme CoqIDE ou <a href="https://proofgeneral.github.io/" target="_blank">Proof General</a> pour Emacs</li></ol>',
+                'spinoza_installation_title': 'Installation',
+                'spinoza_installation': '<ol><li>Installez Coq en suivant les instructions sur le <a href="https://coq.inria.fr/download" target="_blank">site officiel</a></li><li>Clonez ce dépôt :<pre><code>git clone https://github.com/l-pommeret/Projet-Spinoza.git\ncd Projet-Spinoza</code></pre></li></ol>',
+                'spinoza_execution_title': 'Exécution',
+                'spinoza_execution': '<h4>Avec CoqIDE</h4><ol><li>Ouvrez CoqIDE</li><li>Ouvrez le fichier <code>De_Deo.v</code></li><li>Utilisez le bouton "Step forward" ou la combinaison de touches Ctrl+Right pour avancer pas à pas dans la preuve</li></ol><h4>Avec Proof General (Emacs)</h4><ol><li>Ouvrez Emacs</li><li>Ouvrez le fichier <code>De_Deo.v</code></li><li>Utilisez C-c C-n pour avancer d\'une étape dans la preuve ou C-c C-Enter pour avancer jusqu\'au curseur</li></ol><h4>En ligne de commande</h4><p>Pour compiler le projet sans interface graphique :</p><pre><code>coqc De_Deo.v</code></pre>',
+                'spinoza_thanks_title': 'Remerciements',
+                'spinoza_thanks': '<ul><li>Charles Jarrett pour sa formalisation logique de l\'Éthique</li><li>L\'équipe de développement de Coq pour cet assistant de preuve</li><li>Claude 3.5, le LLM qui m\'a beaucoup aidé à réaliser ce projet, parfois étonnamment fort en démonstrations.</li></ul>',
+                'spinoza_link': 'Voir le projet sur GitHub'
             },
             'en': {
                 'project_title': 'Waist of Time',
@@ -148,7 +189,23 @@
                 'project_1_title': 'Verification of Spinoza\'s Ethics',
                 'project_1_description': 'The project of verifying the logical validity of Spinoza\'s Ethics is not new (one can think of the work of Charles Jarrett in the US, or that of Martial Guéroult in France). Similarly, attempts at formalization in Coq have been undertaken (see Baptiste Mélès, or this Github account).',
                 'github': 'GitHub',
-                'waist': 'Waist of Time'
+                'waist': 'Waist of Time',
+                
+                'spinoza_details_title': 'Spinoza Project - Details',
+                'spinoza_intro': 'This project is a formalization in Coq of the propositions from Book I of Spinoza\'s Ethics, according to the logical formalization proposed by Charles Jarrett in his article "The Logical Structure of Spinoza\'s Ethics, Part I" (1978). I plan to continue with Book II soon, but there\'s first a logical translation work to be done! This implies philosophical assumptions. The formalization relies on modal logic, allowing to distinguish between logical necessity, natural necessity, and possibility.',
+                'spinoza_caveat_title': 'Caveat',
+                'spinoza_caveat': 'These demonstrations are based on a philosophical interpretation (since it\'s a formalization) of the Ethics, and are therefore a shared responsibility of Spinoza and Charles Jarrett.',
+                'spinoza_content_title': 'Project Content',
+                'spinoza_content': 'The main file <code>De_Deo.v</code> contains: <ul><li>Formal definitions of modal operators (logical necessity, possibility, natural necessity), which suit Spinoza\'s philosophy</li><li>The lexicon of unary, binary and ternary predicates corresponding to Spinozist concepts</li><li>The fundamental modal axioms</li><li>Spinoza\'s definitions (causa sui, substance, attribute, mode, God, etc.)</li><li>The axioms proposed by Spinoza and completed by Jarrett</li><li>The formal demonstrations of the 36 propositions of Book I (except P33 and P36 which are underivable from the system)</li></ul>',
+                'spinoza_requirements_title': 'Requirements',
+                'spinoza_requirements': 'To run this project, you will need: <ol><li><a href="https://coq.inria.fr/" target="_blank">Coq</a> (version 8.13 or higher recommended)</li><li>A Coq-compatible IDE such as CoqIDE or <a href="https://proofgeneral.github.io/" target="_blank">Proof General</a> for Emacs</li></ol>',
+                'spinoza_installation_title': 'Installation',
+                'spinoza_installation': '<ol><li>Install Coq by following the instructions on the <a href="https://coq.inria.fr/download" target="_blank">official website</a></li><li>Clone this repository:<pre><code>git clone https://github.com/l-pommeret/Projet-Spinoza.git\ncd Projet-Spinoza</code></pre></li></ol>',
+                'spinoza_execution_title': 'Execution',
+                'spinoza_execution': '<h4>With CoqIDE</h4><ol><li>Open CoqIDE</li><li>Open the file <code>De_Deo.v</code></li><li>Use the "Step forward" button or the Ctrl+Right key combination to advance step by step in the proof</li></ol><h4>With Proof General (Emacs)</h4><ol><li>Open Emacs</li><li>Open the file <code>De_Deo.v</code></li><li>Use C-c C-n to advance one step in the proof or C-c C-Enter to advance to the cursor</li></ol><h4>Command Line</h4><p>To compile the project without a graphical interface:</p><pre><code>coqc De_Deo.v</code></pre>',
+                'spinoza_thanks_title': 'Acknowledgements',
+                'spinoza_thanks': '<ul><li>Charles Jarrett for his logical formalization of the Ethics</li><li>The Coq development team for this proof assistant</li><li>Claude 3.5, the LLM that helped me a lot with this project, sometimes surprisingly strong in demonstrations.</li></ul>',
+                'spinoza_link': 'View the project on GitHub'
             }
         };
 
