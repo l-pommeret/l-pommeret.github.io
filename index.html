@@ -107,6 +107,9 @@
             background-color: #24b597;
             color: white;
         }
+        .experience-item {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -131,21 +134,36 @@
             <p class="header" data-translate="header"></p>
             
             <h2 data-translate="recent_experience"></h2>
-            <h3><a href="https://www.irif.fr">IRIF</a> <span data-translate="irif_full"></span></h3>
-            <p data-translate="position_date"></p>
-            <p><i data-translate="supervisor"></i></p>
-            <ul>
-                <li data-translate="research_topic_1"></li>
-                <li data-translate="research_topic_2"></li>
-                <li data-translate="research_topic_3"></li>
-            </ul>
-            <p><a href="assets/Rapport.pdf" class="document-link" data-translate="internship_report"></a></p>
+            
+            <div class="experience-item">
+                <h3><a href="https://www.lisn.upsaclay.fr/">LISN</a> <span data-translate="lisn_full"></span></h3>
+                <p data-translate="lisn_position_date"></p>
+                <p><i data-translate="lisn_supervisor"></i></p>
+                <ul>
+                    <li data-translate="lisn_research_topic_1"></li>
+                    <li data-translate="lisn_research_topic_2"></li>
+                    <li data-translate="lisn_research_topic_3"></li>
+                </ul>
+            </div>
+            
+            <div class="experience-item">
+                <h3><a href="https://www.irif.fr">IRIF</a> <span data-translate="irif_full"></span></h3>
+                <p data-translate="position_date"></p>
+                <p><i data-translate="supervisor"></i></p>
+                <ul>
+                    <li data-translate="research_topic_1"></li>
+                    <li data-translate="research_topic_2"></li>
+                    <li data-translate="research_topic_3"></li>
+                </ul>
+                <p><a href="assets/Rapport.pdf" class="document-link" data-translate="internship_report"></a></p>
+            </div>
             
             <h2 data-translate="main_skills"></h2>
             <ul>
                 <li>Python</li>
                 <li>NLP</li>
                 <li>Cloud Computing</li>
+                <li>RAG</li>
                 <li data-translate="generative_ai"></li>
             </ul>
             
@@ -163,7 +181,7 @@
     <script>
         const translations = {
             'fr': {
-                'header': 'Étudiant en Master 2 | 22 ans | Machine learning et logique | Chercheur Stagiaire à l\'<a href="https://www.irif.fr">IRIF</a> (Paris XIIIe)',
+                'header': 'Étudiant en Master 2 | 22 ans | Machine learning et logique | Chercheur Stagiaire',
                 'recent_experience': 'Expérience Récente',
                 'irif_full': '(Institut de Recherche en Informatique Fondamentale)',
                 'position_date': 'Assistant de recherche stagiaire | avril 2024 - septembre 2024',
@@ -171,6 +189,12 @@
                 'research_topic_1': 'Étude de l\'émergence de capacités dans les grands modèles de langage (LLMs)',
                 'research_topic_2': 'Étude de l\'impact du bruit dans les données d\'entraînement sur les performances des LLMs',
                 'research_topic_3': 'Étude des représentations internes à l\'aide de techniques de probing et de Sparse Auto-Encoders',
+                'lisn_full': '(Laboratoire Interdisciplinaire des Sciences du Numérique)',
+                'lisn_position_date': 'Stage fin d\'étude | avril 2025 - octobre 2025 (6 mois)',
+                'lisn_supervisor': 'sous la direction de <a href="https://saharghannay.github.io/">Sahar Ghannay</a> et <a href="https://servan.fr/">Christophe Servan</a>',
+                'lisn_research_topic_1': 'Évaluation et amélioration d\'un système de dialogue et de question-réponse de type RAG utilisant des LLM Open-Source',
+                'lisn_research_topic_2': 'Mise en place de génération contrainte des LLMs dans le cadre d\'un RAG',
+                'lisn_research_topic_3': 'Évaluation des processus en collaboration avec les services de la DiBISO',
                 'main_skills': 'Compétences Principales',
                 'generative_ai': 'IA générative',
                 'talk_title': 'Exploring Emergent Skills with Chess-GPT',
@@ -185,7 +209,7 @@
                 'waist': 'Perte de temps'
             },
             'en': {
-                'header': 'Graduate Student | 22 years old | Machine Learning and Logic | Research Intern at <a href="https://www.irif.fr">IRIF</a> (Paris 13th)',
+                'header': 'Graduate Student | 22 years old | Machine Learning and Logic | Research Intern',
                 'recent_experience': 'Recent Experience',
                 'irif_full': '(Institute for Research in Fundamental Computer Science)',
                 'position_date': 'Research Assistant Intern | April 2024 - September 2024',
@@ -193,6 +217,12 @@
                 'research_topic_1': 'Study of emerging capabilities in large language models (LLMs)',
                 'research_topic_2': 'Study of the impact of noise in training data on LLM performance',
                 'research_topic_3': 'Study of the internal representations of transformers who play chess and tic-tac-toe with probing techniques and Sparse Auto Encoders',
+                'lisn_full': '(Interdisciplinary Laboratory of Digital Sciences)',
+                'lisn_position_date': 'Final year internship | April 2025 - October 2025 (6 months)',
+                'lisn_supervisor': 'under the supervision of <a href="https://saharghannay.github.io/">Sahar Ghannay</a> and <a href="https://servan.fr/">Christophe Servan</a>',
+                'lisn_research_topic_1': 'Evaluation and improvement of a RAG-type dialogue and question-answering system using Open-Source LLMs',
+                'lisn_research_topic_2': 'Implementation of constrained generation for LLMs in a RAG context',
+                'lisn_research_topic_3': 'Evaluation of processes in collaboration with DiBISO services',
                 'main_skills': 'Main Skills',
                 'generative_ai': 'Generative AI',
                 'talk_title': 'Exploring Emergent Skills with Chess-GPT',
@@ -212,7 +242,9 @@
             document.documentElement.lang = lang;
             document.querySelectorAll('[data-translate]').forEach(elem => {
                 const key = elem.getAttribute('data-translate');
-                elem.innerHTML = translations[lang][key];
+                if (translations[lang][key]) {
+                    elem.innerHTML = translations[lang][key];
+                }
             });
         }
 
